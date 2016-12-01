@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">DabbaWala</string>
+    <string name="title_activity_referencia">ReferenciaActivity</string>
+    <string name="deliveryman">Food Logistics Specialist</string>
+    <string name="delivery_login">Ingresa a tu perfil</string>
+    <string name="delivery_session_text">Inicia Sesión</string>
+    <string name="toolbar_deliver_id">Perfil de repartidor</string>
+    <string name="toolbar_deliver_login">Inicio de sesión</string>
+    <string name="deliver_login_text">Seleciona un método de ingreso</string>
+    <string name="Google">Google</string>
+    <string name="Facebook">Facebook</string>
+    <string name="Twitter">Twitter</string>
+    <string name="mailID">Correo electrónico</string>
+    <string name="btn_Log">Ingresa</string>
+    <string name="user_text">Usuario</string>
+    <string name="password_text">Contraseña</string>
+    <string name="hint_user">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="title_activity_deliver_id2">DeliverID2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Regresar</string>
+    <string name="title_activity_deliver_navigation">DeliverNavigationActivity</string>
+    <string name="deliver_list">Entregas</string>
+    <string name="deliverhome">Home</string>
+    <string name="finish">Completado</string>
+    <string name="nav_deliver_list">Entregas</string>
+    <string name="deliver_menu_principal">Principal</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_name">Cliente:</string>
+    <string name="user_address">Direccion:</string>
+    <string name="complete_deliver">Entrega Completa</string>
+    <string name="user_order">Orden</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="message">Casi termina el tiempo</string>
+    <string name="alert_tittle">Alerta!!</string>
+    <string name="dabbalog">Login</string>
+    <string name="sign_in">Ingresa</string>
+
+    <string name="google_status_fmt">Google User: %s</string>
+    <string name="google_title_text">Google Sign In</string>
+
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="firebase_user_management">Firebase User Management</string>
+    <string name="signed_out">Desconectado</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="deliverEmail">Ingresa con tu correo</string>
+    <string name="deliverGoogle">Ingresa con Google</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="map">Mapa</string>
+    <string name="title_activity_tabbed__requests">Tabbed_Requests\"</string>
+
+</resources>

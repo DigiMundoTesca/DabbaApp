@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "870471053123",
+    "firebase_url": "https://dabba-deliver.firebaseio.com",
+    "project_id": "dabba-deliver",
+    "storage_bucket": "dabba-deliver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870471053123:android:f95c989ea82daf5b",
+        "android_client_info": {
+          "package_name": "com.tesca.dabbaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870471053123-31k3n6lnundqisd095c7ol3ut3eb1rj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tesca.dabbaapp",
+            "certificate_hash": "7053F205750E30DB0348148C1FB0127A042390BD"
+          }
+        },
+        {
+          "client_id": "870471053123-otd25l4t7rvfumeqiqf9tplej6n7as9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC2kzoprejYgrMrTpcZZe5Dci8EKzkbGs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870471053123-otd25l4t7rvfumeqiqf9tplej6n7as9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

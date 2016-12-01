@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#D32F2F</color>
+    <color name="colorToolbar">#D32F2F</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="colorLightAccent">#FFB74D</color>
+        <color name="colorLightPrimary">#FFCDD2</color>
+    <color name="text_icons">#FFFFFF</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="color_divider">#BDBDBD</color>
+    <color name="editTextColorWhite">#FFFFFF</color>
+    <color name="editTextColorBlack">#000000</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="orange">#ffa500</color>
+    <color name="trans">#CCFFFFFF</color>
+</resources>
