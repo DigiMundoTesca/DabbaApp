@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements
     private Button mLoginBtn;
     private EditText nel;
 
-
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
