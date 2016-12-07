@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tesca.dabbaapp.Estructuras.Cartucho;
+import com.tesca.dabbaapp.Estructuras.Orden;
+import com.tesca.dabbaapp.Estructuras.Paquete;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

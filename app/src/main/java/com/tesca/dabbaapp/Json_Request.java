@@ -1,5 +1,7 @@
 package com.tesca.dabbaapp;
 
+import com.tesca.dabbaapp.Estructuras.Orden;
+
 import java.io.Serializable;
 import java.util.List;
 
