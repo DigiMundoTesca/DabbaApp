@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     private String TAG = "TAG";
-    private static String url = "http://dabbanet.tescacorporation.com/api/v1/customer-orders/?format=json";
+    private static String url = "http://dabbawala.com.mx/api/v1/customer-orders/?format=json";
     ArrayList<HashMap<String, String>> contactList;
     private ListView lv;
     private FirebaseAuth mAuth;
@@ -276,21 +276,22 @@ public class MainActivity extends AppCompatActivity {
 
                         // Converting dateFormat
 
-                        String originalString = delivery_date;
+                        String originalString = delivery_date.substring(0,18);
                         String show_time = "00:00";
 
                         try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(originalString);
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(originalString);
                             SimpleDateFormat output = new SimpleDateFormat("HH:mm");
                             show_time = output.format(date);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
 
+                        String original_created = created_at.substring(0,18);
                         String created_date = "00:00";
 
                         try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(created_at);
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(original_created);
                             SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                             created_date = output.format(date);
                         } catch (ParseException e) {
@@ -319,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                         Date datex = null;
 
                         try {
-                             datex = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(delivery_string);
+                             datex = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(delivery_string);
 
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -340,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
                     json_request.setNext(next);
                     json_request.setPreviuos(previous);
                     json_request.setResultados(lista_de_ordenes);
+
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
