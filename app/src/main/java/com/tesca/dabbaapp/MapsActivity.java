@@ -116,8 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //19 digitos
 
         try {
-            String delivery_Date_use = delivery_time.substring(0, 18);
-            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(delivery_Date_use);
+            String delivery_Date_use = delivery_time.substring(0, 19);
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(delivery_Date_use);
         } catch (ParseException e) {
             e.printStackTrace();
         }

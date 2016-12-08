@@ -150,11 +150,12 @@ public class Tabbed_Requests extends AppCompatActivity {
             ListAdapter_Paquetes listAdapter_paquetes = new ListAdapter_Paquetes(getActivity(), R.layout.cartucho_element, lista.get(a).getLista_de_paquetes());
             list_view_paquetes.setAdapter(listAdapter_paquetes);
 
+            String originalString = lista.get(a).getCreated_date().substring(0,19);
             String created_date = "00:00";
 
             try {
-                Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(lista.get(a).getCreated_date());
-                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(originalString);
+                SimpleDateFormat output = new SimpleDateFormat("HH:mm");
                 created_date = output.format(date);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -166,12 +167,11 @@ public class Tabbed_Requests extends AppCompatActivity {
             price_tv.setText(lista.get(a).getPrice());
             status_tv.setText(lista.get(a).getStatus());
 
+            String delivery_String = lista.get(a).getDelivery_date().substring(0,19);
             String show_time = "00:00";
 
-
-
             try {
-                Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(lista.get(a).getDelivery_date());
+                Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(delivery_String);
                 SimpleDateFormat output = new SimpleDateFormat("HH:mm");
                 show_time = output.format(date);
             } catch (ParseException e) {
