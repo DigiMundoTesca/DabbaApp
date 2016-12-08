@@ -16,6 +16,13 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
+import com.tesca.dabbaapp.Estructuras.Cartucho;
+import com.tesca.dabbaapp.Estructuras.Custom_Order;
+import com.tesca.dabbaapp.Estructuras.Custom_User;
+import com.tesca.dabbaapp.Estructuras.Orden;
+import com.tesca.dabbaapp.Estructuras.Paquete;
+import com.tesca.dabbaapp.Estructuras.Paquete_Recipe;
+import com.tesca.dabbaapp.Estructuras.User_Dabba;
 
 import org.json.JSONArray;
 import org.json.JSONException;

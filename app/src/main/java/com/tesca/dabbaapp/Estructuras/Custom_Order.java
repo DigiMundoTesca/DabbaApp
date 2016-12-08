@@ -1,4 +1,4 @@
-package com.tesca.dabbaapp;
+package com.tesca.dabbaapp.Estructuras;
 
 import java.io.Serializable;
 
