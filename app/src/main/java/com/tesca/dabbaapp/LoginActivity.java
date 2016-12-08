@@ -231,4 +231,10 @@ public class LoginActivity extends AppCompatActivity implements
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        startActivity(new Intent(LoginActivity.this, DeliverMainActivity.class));
+    }
 }
