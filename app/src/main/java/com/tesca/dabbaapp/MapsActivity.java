@@ -13,11 +13,8 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-<<<<<<< HEAD
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-=======
->>>>>>> origin/develop
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
@@ -27,6 +24,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -38,6 +37,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.tesca.dabbaapp.Estructuras.Orden;
 
 import org.json.JSONObject;
 
@@ -58,16 +59,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-import com.google.firebase.auth.FirebaseAuth;
-import com.tesca.dabbaapp.Estructuras.Orden;
 
-<<<<<<< HEAD
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-=======
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
->>>>>>> origin/develop
+
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -76,11 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseAuth mAuth;
     FloatingActionMenu materialDesignFAM;
     FloatingActionButton fab1, fab2;
-<<<<<<< HEAD
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-=======
->>>>>>> origin/develop
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +145,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         long current_long = c.getTimeInMillis();
 
         countDown(delivery_long, current_long);
-<<<<<<< HEAD
 
     }
 
@@ -163,8 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onStart();
         mGoogleApiClient.connect();
     }
-=======
->>>>>>> origin/develop
 
     @Override
     protected void onStop() {
@@ -194,7 +182,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return url;
     }
 
-<<<<<<< HEAD
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -221,9 +208,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private class DownloadTask extends AsyncTask<String, Void, String>{
-=======
-    private class DownloadTask extends AsyncTask<String, Void, String> {
->>>>>>> origin/develop
 
         // Downloading data in non-ui thread
         @Override
