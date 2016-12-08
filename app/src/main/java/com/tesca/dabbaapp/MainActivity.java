@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     private String TAG = "TAG";
-    private static String url = "http://dabbanet.tescacorporation.com/api/v1/customer-orders/?format=json";
+    private static String url = "http://dabbawala.com.mx/api/v1/customer-orders/?format=json";
     ArrayList<HashMap<String, String>> contactList;
     private ListView lv;
     private FirebaseAuth mAuth;
@@ -77,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
         new GetContacts().execute();
 
+    }
+    @Override  //Refresh activity
+    protected void onResume (){
+        super.onResume();
+        this.onCreate(null);
     }
 
     private class GetContacts extends AsyncTask<Object, Object, Json_Request> {
