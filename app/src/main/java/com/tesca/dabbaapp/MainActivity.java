@@ -281,22 +281,22 @@ public class MainActivity extends AppCompatActivity {
 
                         // Converting dateFormat
 
-                        String originalString = delivery_date.substring(0,18);
+                        String originalString = delivery_date.substring(0,19);
                         String show_time = "00:00";
 
                         try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(originalString);
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(originalString);
                             SimpleDateFormat output = new SimpleDateFormat("HH:mm");
                             show_time = output.format(date);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
 
-                        String original_created = created_at.substring(0,18);
+                        String original_created = created_at.substring(0,19);
                         String created_date = "00:00";
 
                         try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(original_created);
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(original_created);
                             SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                             created_date = output.format(date);
                         } catch (ParseException e) {
