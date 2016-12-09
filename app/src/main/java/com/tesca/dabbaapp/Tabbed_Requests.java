@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,15 +21,26 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 import com.tesca.dabbaapp.Estructuras.Cartucho;
 import com.tesca.dabbaapp.Estructuras.Orden;
 import com.tesca.dabbaapp.Estructuras.Paquete;
 
+import org.json.JSONObject;
+
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tabbed_Requests extends AppCompatActivity {
 
@@ -85,6 +97,44 @@ public class Tabbed_Requests extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static void makeServicePut(Context ctxt, String id, final String status){
+
+        RequestQueue queue = Volley.newRequestQueue(ctxt);
+
+        String url = "http://dabbawala.com.mx/api/v1/customer-orders/" + id +"/status";
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("status", status);
+
+                return params;
+            }
+
+        };
+
+        queue.add(putRequest);
+
+    }
+
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -137,12 +187,10 @@ public class Tabbed_Requests extends AppCompatActivity {
                     i.putExtra("Orden",lista.get(a));
                     startActivity(i);
 
+                    makeServicePut(getActivity(), lista.get(a).getId(),"CA");
 
                 }
             });
-
-
-
 
             ListAdapter_Cartuchos listAdapter_cartuchos = new ListAdapter_Cartuchos(getActivity(), R.layout.cartucho_element, lista.get(a).getLista_de_cartuchos());
             list_view_cartuchos.setAdapter(listAdapter_cartuchos);
