@@ -167,9 +167,22 @@ public class Tabbed_Requests extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tabbed__requests, container, false);
+
+            TextView hora_tv = (TextView) rootView.findViewById(R.id.hour_tv);
+            TextView created_time_tv = (TextView) rootView.findViewById(R.id.created_time);
+            TextView customer_tv = (TextView) rootView.findViewById(R.id.customer);
+            TextView price_tv = (TextView) rootView.findViewById(R.id.price);
+            TextView status_tv = (TextView) rootView.findViewById(R.id.status);
+
+            ListView list_view_cartuchos = (ListView) rootView.findViewById(R.id.lista);
+            ListView list_view_paquetes = (ListView) rootView.findViewById(R.id.lista_paquetes);
+
+            Button mapa = (Button) rootView.findViewById(R.id.button2);
+
+            final int a = getArguments().getInt(ARG_SECTION_NUMBER);
             //Floating menu
             final FloatingActionMenu fam;
             final FloatingActionButton fab1,fab2,fab3;
@@ -185,7 +198,7 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
                     fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.pending);
-
+                    makeServicePut(getContext(),lista.get(a).getId(),"PR");
                 }
             });
             fab2.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +207,8 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.done);
                     fam.setClickable(false);
+                    makeServicePut(getContext(),lista.get(a).getId(),"SO");
+
                 }
             });
             fab3.setOnClickListener(new View.OnClickListener() {
@@ -202,22 +217,10 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.canceled);
                     fam.setClickable(false);
+                    makeServicePut(getContext(),lista.get(a).getId(),"CA");
                 }
             });
 
-
-            TextView hora_tv = (TextView) rootView.findViewById(R.id.hour_tv);
-            TextView created_time_tv = (TextView) rootView.findViewById(R.id.created_time);
-            TextView customer_tv = (TextView) rootView.findViewById(R.id.customer);
-            TextView price_tv = (TextView) rootView.findViewById(R.id.price);
-            TextView status_tv = (TextView) rootView.findViewById(R.id.status);
-
-            ListView list_view_cartuchos = (ListView) rootView.findViewById(R.id.lista);
-            ListView list_view_paquetes = (ListView) rootView.findViewById(R.id.lista_paquetes);
-
-            Button mapa = (Button) rootView.findViewById(R.id.button2);
-
-            final int a = getArguments().getInt(ARG_SECTION_NUMBER);
 
             mapa.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -225,7 +228,6 @@ public class Tabbed_Requests extends AppCompatActivity {
                     Intent i = new Intent(getActivity(),MapsActivity.class);
                     i.putExtra("Orden",lista.get(a));
                     startActivity(i);
-
                 }
             });
 
