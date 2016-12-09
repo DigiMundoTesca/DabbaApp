@@ -135,12 +135,13 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
                     fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.pending);
-                    fam.setClickable(false);
+
                 }
             });
             fab2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
+                    fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.done);
                     fam.setClickable(false);
                 }
@@ -148,6 +149,7 @@ public class Tabbed_Requests extends AppCompatActivity {
             fab3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
+                    fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.canceled);
                     fam.setClickable(false);
                 }
