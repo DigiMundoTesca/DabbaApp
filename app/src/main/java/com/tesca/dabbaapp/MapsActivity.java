@@ -377,7 +377,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
 
@@ -424,7 +423,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-
+                if (a.equals("00:25:00")){
+                    dialog();
+                }
                 textView.setText(a);
             }
 
