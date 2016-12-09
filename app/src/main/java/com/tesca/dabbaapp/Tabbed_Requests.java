@@ -226,9 +226,6 @@ public class Tabbed_Requests extends AppCompatActivity {
                     Intent i = new Intent(getActivity(),MapsActivity.class);
                     i.putExtra("Orden",lista.get(a));
                     startActivity(i);
-
-                    makeServicePut(getActivity(), lista.get(a).getId(),"CA");
-
                 }
             });
 

@@ -68,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng destination = new LatLng(19.525170, -99.226120);
     private TextView textView, status_tv, costo_tv, id_tv;
     private FirebaseAuth mAuth;
-    FloatingActionMenu materialDesignFAM;
+    FloatingActionMenu fam;
     FloatingActionButton fab1, fab2;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -87,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .enableAutoManage(this, this)
                 .build();
 
-        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        fam = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         fab1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         fab2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
 
@@ -406,15 +406,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         new CountDownTimer(horaentrega, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                if(millisUntilFinished<5*60){
-                    textView.setBackgroundColor(Color.RED);
-                }
-                if(millisUntilFinished<15*60){
-                    textView.setBackgroundColor(Color.YELLOW);
-                }
-                if(millisUntilFinished<30*60){
-                    textView.setBackgroundColor(Color.GREEN);
-                }
 
                 String a = String.format("%02d:%02d:%02d",
                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
@@ -423,7 +414,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                if (a.equals("00:25:00")){
+                /*if(a.equals("00:20:00")){
+                    textView.setBackgroundColor(Color.YELLOW);
+                }
+                if(a.equals("00:10:00")){
+                    textView.setBackgroundColor(Color.RED);
+                }
+                else{
+                    textView.setBackgroundColor(Color.GREEN);
+                }*/
+
+                if (a.equals("00:10:00")){
                     dialog();
                 }
                 textView.setText(a);
