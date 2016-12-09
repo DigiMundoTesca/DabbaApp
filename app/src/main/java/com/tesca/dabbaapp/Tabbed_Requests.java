@@ -21,25 +21,26 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.squareup.picasso.Picasso;
 import com.tesca.dabbaapp.Estructuras.Cartucho;
 import com.tesca.dabbaapp.Estructuras.Orden;
 import com.tesca.dabbaapp.Estructuras.Paquete;
-
-import org.json.JSONObject;
-
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import java.util.Map;
 
 public class Tabbed_Requests extends AppCompatActivity {
@@ -47,6 +48,7 @@ public class Tabbed_Requests extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private List<Orden> lista_resultados;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,8 +167,43 @@ public class Tabbed_Requests extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-
             View rootView = inflater.inflate(R.layout.fragment_tabbed__requests, container, false);
+            //Floating menu
+            final FloatingActionMenu fam;
+            final FloatingActionButton fab1,fab2,fab3;
+
+            fam = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
+            fam.getMenuIconView().setImageResource(R.drawable.add);
+            fab1 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item1);
+            fab2 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item2);
+            fab3 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item3);
+
+            fab1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
+                    fam.close(true);
+                    fam.getMenuIconView().setImageResource(R.drawable.pending);
+
+                }
+            });
+            fab2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
+                    fam.close(true);
+                    fam.getMenuIconView().setImageResource(R.drawable.done);
+                    fam.setClickable(false);
+                }
+            });
+            fab3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
+                    fam.close(true);
+                    fam.getMenuIconView().setImageResource(R.drawable.canceled);
+                    fam.setClickable(false);
+                }
+            });
+
+
             TextView hora_tv = (TextView) rootView.findViewById(R.id.hour_tv);
             TextView created_time_tv = (TextView) rootView.findViewById(R.id.created_time);
             TextView customer_tv = (TextView) rootView.findViewById(R.id.customer);

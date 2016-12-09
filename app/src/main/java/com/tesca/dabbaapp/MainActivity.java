@@ -13,8 +13,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tesca.dabbaapp.Estructuras.Cartucho;
 import com.tesca.dabbaapp.Estructuras.Custom_Order;
@@ -46,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> contactList;
     private ListView lv;
     private FirebaseAuth mAuth;
-    FloatingActionMenu materialDesignFAM;
-    FloatingActionButton fab1,fab2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,30 +53,17 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        fab1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
-        fab2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
-
-        fab1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mAuth.signOut();
-                //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-        });
-        fab2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         contactList = new ArrayList<>();
         lv = (ListView)findViewById(R.id.lista);
 
         new GetContacts().execute();
 
     }
+    /*@Override  //Refresh activity
+    protected void onResume (){
+        super.onResume();
+        this.onCreate(null);
+    }*/
 
     private class GetContacts extends AsyncTask<Object, Object, Json_Request> {
 

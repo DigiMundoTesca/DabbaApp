@@ -52,5 +52,8 @@
     <string name="logout">Cerrar Sesión</string>
     <string name="map">Mapa</string>
     <string name="title_activity_tabbed__requests">Tabbed_Requests\"</string>
+    <string name="pending">Pendiente</string>
+    <string name="complete">Completada</string>
+    <string name="canceled">Cancelado</string>
 
 </resources>
