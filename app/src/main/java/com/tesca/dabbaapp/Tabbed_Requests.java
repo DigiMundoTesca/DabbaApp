@@ -133,6 +133,7 @@ public class Tabbed_Requests extends AppCompatActivity {
             fab1.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
+                    fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.pending);
                     fam.setClickable(false);
                 }
