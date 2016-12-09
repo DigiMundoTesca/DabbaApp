@@ -5,7 +5,7 @@
     <color name="colorToolbar">#D32F2F</color>
     <color name="colorAccent">#FF9800</color>
     <color name="colorLightAccent">#FFB74D</color>
-        <color name="colorLightPrimary">#FFCDD2</color>
+    <color name="colorLightPrimary">#FFCDD2</color>
     <color name="text_icons">#FFFFFF</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
@@ -18,4 +18,5 @@
     <color name="trans">#CCFFFFFF</color>
     <color name="done">#4CAF50</color>
     <color name="canceled">#D32F2F</color>
+
 </resources>

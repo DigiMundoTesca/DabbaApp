@@ -2,6 +2,13 @@ package com.tesca.dabbaapp;
 
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +17,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.concurrent.NotThreadSafe;
 
 /**
  * Created by Ravi Tamada on 01/09/16.
@@ -43,6 +55,7 @@ public class HttpHandler {
         }
         return response;
     }
+
 
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
