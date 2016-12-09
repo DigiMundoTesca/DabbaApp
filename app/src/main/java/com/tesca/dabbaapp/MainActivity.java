@@ -1,10 +1,15 @@
 package com.tesca.dabbaapp;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -390,11 +395,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     public static Calendar toCalendar(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
+    }
+
+    public void notification(){
+
+        String ACTION_DISMISS = "Dissmiss";
+
+        Intent dismissIntent = new Intent(this, MainActivity.class);
+
+        dismissIntent.setAction(ACTION_DISMISS);
+        PendingIntent piDismiss = PendingIntent.getService(this, 0, dismissIntent, 0);
+
+        android.support.v4.app.NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.moto2)
+                        .setContentTitle("Nuevo pedido")
+                        .setContentText("Ah llegado un nuevo pedido")
+                        .setDefaults(Notification.DEFAULT_ALL) // must requires VIBRATE permission
+                        .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
+                        .addAction(R.drawable.done,
+                                getString(R.string.gotoApp), piDismiss);
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, builder.build());
     }
 }

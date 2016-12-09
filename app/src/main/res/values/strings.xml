@@ -55,5 +55,6 @@
     <string name="pending">Pendiente</string>
     <string name="complete">Completada</string>
     <string name="canceled">Cancelado</string>
+    <string name="gotoApp">Ver en Dabba</string>
 
 </resources>
