@@ -414,17 +414,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                /*if(a.equals("00:20:00")){
+                if(a.equals("00:20:00")){
                     textView.setBackgroundColor(Color.YELLOW);
                 }
                 if(a.equals("00:10:00")){
                     textView.setBackgroundColor(Color.RED);
-                }
-                else{
-                    textView.setBackgroundColor(Color.GREEN);
-                }*/
-
-                if (a.equals("00:10:00")){
                     dialog();
                 }
                 textView.setText(a);
