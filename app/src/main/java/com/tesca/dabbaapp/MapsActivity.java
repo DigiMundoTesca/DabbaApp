@@ -66,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
     private LatLng destination = new LatLng(19.525170, -99.226120);
-    private TextView textView, status_tv, costo_tv, id_tv;
+    private TextView textView, user, status_tv, costo_tv, id_tv;
     private FirebaseAuth mAuth;
     FloatingActionMenu fam;
     FloatingActionButton fab1, fab2;
@@ -145,6 +145,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         long current_long = c.getTimeInMillis();
 
         countDown(delivery_long, current_long);
+
+        user = (TextView) findViewById(R.id.user_name);
+        user.setText("Cliente\n\t\t"+customer+"\nDirección\n\t\t"+latitude+"\n"+longitude); //Address
 
     }
 
@@ -245,13 +248,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             LatLng changed_position = new LatLng(loc.getLatitude(), loc.getLongitude());
             String url = getDirectionsUrl(changed_position, destination);
+            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(changed_position,mMap.getCameraPosition().zoom)); //Animate the camera to follow position
 
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
 
-            CameraPosition builder = new CameraPosition.Builder()
+            CameraPosition builder = new CameraPosition.Builder()  //--->Previous code for camera
                     .target(changed_position)
-                    .zoom(25)
+                    .zoom(20)
                     .tilt(50)
                     .build();
 
@@ -386,13 +390,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener locationListener = new MyLocationListener();
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         locationManager.requestLocationUpdates(
@@ -414,17 +412,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                /*if(a.equals("00:20:00")){
+                if(a.equals("00:20:00")){
                     textView.setBackgroundColor(Color.YELLOW);
                 }
                 if(a.equals("00:10:00")){
                     textView.setBackgroundColor(Color.RED);
-                }
-                else{
-                    textView.setBackgroundColor(Color.GREEN);
-                }*/
-
-                if (a.equals("00:10:00")){
                     dialog();
                 }
                 textView.setText(a);
@@ -444,7 +436,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void dialog() //Metodo para ejecutar el Alertdialog
+    private void dialog() //Alert dialog
     {
 
         final AlertFragment dialog = new AlertFragment();
@@ -462,13 +454,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final Timer t = new Timer();
         t.schedule(new TimerTask() {
             public void run() {
-                dialog.dismiss(); // Cierra el alert dialog
-                t.cancel(); // Detiene el timer para evitar crash report
+                dialog.dismiss(); // Close alert dialog
+                t.cancel(); // Stop timer to avoid crash report
             }
-        }, 5000); // Después de 5 segundos se inicia la actividad
+        }, 5000); // Starts activity after 5 seconds
     }
 
-    private void notif()  //Metodo para ejecutar una notificacion local
+    private void notif()  //Local notification
     {
 
         NotificationCompat.Builder  notif = (NotificationCompat.Builder) new NotificationCompat.Builder(this)

@@ -175,7 +175,7 @@ public class Tabbed_Requests extends AppCompatActivity {
             TextView created_time_tv = (TextView) rootView.findViewById(R.id.created_time);
             TextView customer_tv = (TextView) rootView.findViewById(R.id.customer);
             TextView price_tv = (TextView) rootView.findViewById(R.id.price);
-            TextView status_tv = (TextView) rootView.findViewById(R.id.status);
+            final TextView status_tv = (TextView) rootView.findViewById(R.id.status);
 
             ListView list_view_cartuchos = (ListView) rootView.findViewById(R.id.lista);
             ListView list_view_paquetes = (ListView) rootView.findViewById(R.id.lista_paquetes);
@@ -186,41 +186,6 @@ public class Tabbed_Requests extends AppCompatActivity {
             //Floating menu
             final FloatingActionMenu fam;
             final FloatingActionButton fab1,fab2,fab3;
-
-            fam = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
-            fam.getMenuIconView().setImageResource(R.drawable.add);
-            fab1 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item1);
-            fab2 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item2);
-            fab3 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item3);
-
-            fab1.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
-                    fam.close(true);
-                    fam.getMenuIconView().setImageResource(R.drawable.pending);
-                    makeServicePut(getContext(),lista.get(a).getId(),"PR");
-                }
-            });
-            fab2.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
-                    fam.close(true);
-                    fam.getMenuIconView().setImageResource(R.drawable.done);
-                    fam.setClickable(false);
-                    makeServicePut(getContext(),lista.get(a).getId(),"SO");
-
-                }
-            });
-            fab3.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
-                    fam.close(true);
-                    fam.getMenuIconView().setImageResource(R.drawable.canceled);
-                    fam.setClickable(false);
-                    makeServicePut(getContext(),lista.get(a).getId(),"CA");
-                }
-            });
-
 
             mapa.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -267,6 +232,63 @@ public class Tabbed_Requests extends AppCompatActivity {
 
             hora_tv.setText(show_time);
 
+            fam = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
+            fam.getMenuIconView().setImageResource(R.drawable.add);
+            fab1 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item1);
+            fab1.setColorNormal(getResources().getColor(R.color.orange));
+            fab2 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item2);
+            fab2.setColorNormal(getResources().getColor(R.color.done));
+            fab3 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item3);
+            fab3.setColorNormal(getResources().getColor(R.color.canceled));
+
+            if(status_tv.getText().equals("PR")){
+                fam.getMenuIconView().setImageResource(R.drawable.pending);
+                fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
+                status_tv.setText("Pendiente");
+                fab1.setVisibility(View.GONE);
+            }if(status_tv.getText().equals("SO")){
+                fam.getMenuIconView().setImageResource(R.drawable.done);
+                fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
+                status_tv.setText("Completado");
+                fab2.setVisibility(View.GONE);
+            }if(status_tv.getText().equals("CA")){
+                fam.getMenuIconView().setImageResource(R.drawable.canceled);
+                fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
+                status_tv.setText("Cancelado");
+                fab3.setVisibility(View.GONE);
+            }
+
+            fab1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
+                    fam.close(true);
+                    fam.getMenuIconView().setImageResource(R.drawable.pending);
+                    status_tv.setText("Pendiente");
+                    makeServicePut(getContext(),lista.get(a).getId(),"PR");
+                }
+            });
+            fab2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
+                    fam.close(true);
+                    fam.getMenuIconView().setImageResource(R.drawable.done);
+                    fam.setClickable(false);
+                    fam.isClickable();
+                    status_tv.setText("Completado");
+                    makeServicePut(getContext(),lista.get(a).getId(),"SO");
+
+                }
+            });
+            fab3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
+                    fam.close(true);
+                    fam.getMenuIconView().setImageResource(R.drawable.canceled);
+                    fam.setClickable(false);
+                    status_tv.setText("Cancelado");
+                    makeServicePut(getContext(),lista.get(a).getId(),"CA");
+                }
+            });
 
 
 

@@ -1,5 +1,6 @@
 package com.tesca.dabbaapp;
 
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +39,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,8 +60,18 @@ public class MainActivity extends AppCompatActivity {
         contactList = new ArrayList<>();
         lv = (ListView)findViewById(R.id.lista);
 
-        new GetContacts().execute();
+        if(savedInstanceState == null) {
+            new GetContacts().execute();
+        }
 
+    }
+
+    @Override  //Refresh activity
+    protected void onRestart (){
+        super.onRestart();
+        Intent i = new Intent(MainActivity.this,MainActivity.class);
+        finish();
+        startActivity(i);
     }
 
     private class GetContacts extends AsyncTask<Object, Object, Json_Request> {

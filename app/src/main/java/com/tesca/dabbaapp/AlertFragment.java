@@ -26,11 +26,10 @@ public class AlertFragment extends DialogFragment {
     }
 
    public Dialog onCreateDialog (Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(R.layout.fragment_alert);
         builder.setTitle(R.string.alert_tittle);
         builder.setCancelable(true);
-        //builder.setMessage(R.string.message);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
