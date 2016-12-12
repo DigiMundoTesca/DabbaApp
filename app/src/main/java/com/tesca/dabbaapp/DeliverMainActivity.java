@@ -17,12 +17,10 @@ public class DeliverMainActivity extends AppCompatActivity {
     }
 
     public void goDeliveryId(View view) {
-
-        //Intent para llamar funcion que muestra el ID de de repartidor
-
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
     @Override
     public void onBackPressed() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
