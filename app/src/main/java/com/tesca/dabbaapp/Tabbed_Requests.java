@@ -245,14 +245,17 @@ public class Tabbed_Requests extends AppCompatActivity {
                 fam.getMenuIconView().setImageResource(R.drawable.pending);
                 fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
                 status_tv.setText("Pendiente");
+                fab1.setVisibility(View.GONE);
             }if(status_tv.getText().equals("SO")){
                 fam.getMenuIconView().setImageResource(R.drawable.done);
                 fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
                 status_tv.setText("Completado");
+                fab2.setVisibility(View.GONE);
             }if(status_tv.getText().equals("CA")){
                 fam.getMenuIconView().setImageResource(R.drawable.canceled);
                 fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
                 status_tv.setText("Cancelado");
+                fab3.setVisibility(View.GONE);
             }
 
             fab1.setOnClickListener(new View.OnClickListener() {
