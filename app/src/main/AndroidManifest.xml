@@ -26,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         //Jerarquia padre para Deliverman Login
         <activity
             android:name=".LoginActivity"
@@ -36,6 +37,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DeliverMainActivity" />
         </activity>
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

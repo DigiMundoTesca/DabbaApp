@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
             pDialog.setCancelable(false);
             pDialog.show();
 
+            lv.setAdapter(null);
+
         }
 
         @Override
