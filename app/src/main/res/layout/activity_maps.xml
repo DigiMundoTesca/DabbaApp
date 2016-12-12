@@ -57,14 +57,23 @@
 
         </ScrollView>
 
+        <TextView
+            android:text="4:00"
+            android:id="@+id/textView4"
+            android:textSize="24sp"
+            android:background="@drawable/circle"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="80dp"
+            android:layout_marginTop="25dp"
+            android:layout_width="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/material_design_android_floating_action_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="11dp"
-            android:layout_marginLeft="11dp"
+            android:layout_marginBottom="59dp"
             android:layout_marginRight="11dp"
             fab:menu_animationDelayPerItem="55"
             fab:menu_backgroundColor="@android:color/transparent"
@@ -94,7 +103,11 @@
             fab:menu_shadowRadius="4dp"
             fab:menu_shadowXOffset="1dp"
             fab:menu_shadowYOffset="4dp"
-            fab:menu_showShadow="true">
+            fab:menu_showShadow="true"
+            android:layout_marginEnd="11dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/material_design_floating_action_menu_item1"
@@ -113,18 +126,6 @@
                 fab:fab_size="mini" />
 
         </com.github.clans.fab.FloatingActionMenu>
-
-        <TextView
-            android:text="4:00"
-            android:id="@+id/textView4"
-            android:textSize="24sp"
-            android:background="@drawable/circle"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_height="80dp"
-            android:layout_marginTop="25dp"
-            android:layout_width="120dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>

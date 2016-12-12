@@ -235,8 +235,11 @@ public class Tabbed_Requests extends AppCompatActivity {
             fam = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
             fam.getMenuIconView().setImageResource(R.drawable.add);
             fab1 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item1);
+            fab1.setColorNormal(getResources().getColor(R.color.orange));
             fab2 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item2);
+            fab2.setColorNormal(getResources().getColor(R.color.done));
             fab3 = (FloatingActionButton) rootView.findViewById(R.id.material_design_floating_action_menu_item3);
+            fab3.setColorNormal(getResources().getColor(R.color.canceled));
 
             if(status_tv.getText().equals("PR")){
                 fam.getMenuIconView().setImageResource(R.drawable.pending);
@@ -267,6 +270,7 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.done);
                     fam.setClickable(false);
+                    fam.isClickable();
                     status_tv.setText("Completado");
                     makeServicePut(getContext(),lista.get(a).getId(),"SO");
 
