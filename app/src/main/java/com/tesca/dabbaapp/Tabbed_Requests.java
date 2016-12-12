@@ -256,37 +256,44 @@ public class Tabbed_Requests extends AppCompatActivity {
                 fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
                 status_tv.setText("Cancelado");
                 fab3.setVisibility(View.GONE);
+
             }
 
             fab1.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.orange));
-                    fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.pending);
                     status_tv.setText("Pendiente");
+                    fab1.setVisibility(View.GONE);
+                    fab2.setVisibility(View.VISIBLE);
+                    fab3.setVisibility(View.VISIBLE);
                     makeServicePut(getContext(),lista.get(a).getId(),"PR");
+                    fam.close(true);
                 }
             });
             fab2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.done));
-                    fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.done);
-                    fam.setClickable(false);
-                    fam.isClickable();
                     status_tv.setText("Completado");
+                    fab1.setVisibility(View.VISIBLE);
+                    fab2.setVisibility(View.GONE);
+                    fab3.setVisibility(View.VISIBLE);
                     makeServicePut(getContext(),lista.get(a).getId(),"SO");
+                    fam.close(true);
 
                 }
             });
             fab3.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     fam.setMenuButtonColorNormal(getResources().getColor(R.color.canceled));
-                    fam.close(true);
                     fam.getMenuIconView().setImageResource(R.drawable.canceled);
-                    fam.setClickable(false);
                     status_tv.setText("Cancelado");
+                    fab1.setVisibility(View.VISIBLE);
+                    fab2.setVisibility(View.VISIBLE);
+                    fab3.setVisibility(View.GONE);
                     makeServicePut(getContext(),lista.get(a).getId(),"CA");
+                    fam.close(true);
                 }
             });
 
