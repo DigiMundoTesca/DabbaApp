@@ -64,11 +64,6 @@ public class MainActivity extends AppCompatActivity {
         new GetContacts().execute();
 
     }
-    /*@Override  //Refresh activity
-    protected void onResume (){
-        super.onResume();
-        this.onCreate(null);
-    }*/
 
     private class GetContacts extends AsyncTask<Object, Object, Json_Request> {
 
@@ -80,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
+
+            lv.setAdapter(null);
 
         }
 
