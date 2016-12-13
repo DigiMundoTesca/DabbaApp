@@ -1,24 +1,38 @@
 package com.tesca.dabbaapp;
 
 
+import android.app.ActivityOptions;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Visibility;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tesca.dabbaapp.Estructuras.Cartucho;
 import com.tesca.dabbaapp.Estructuras.Custom_Order;
@@ -32,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,14 +55,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.tesca.dabbaapp.R.id.lista;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressDialog pDialog;
     private String TAG = "TAG";
-    private static String url = "http://dabbawala.com.mx/api/v1/customer-orders/?format=json";
-    ArrayList<HashMap<String, String>> contactList;
-    private ListView lv;
-    private FirebaseAuth mAuth;
+    private RecyclerView lv;
+    private SwipeRefreshLayout refreshLayout;
+    private OrdenAdapter orden;
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -55,112 +76,135 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        this.overridePendingTransition(R.anim.slide_out,
+                R.anim.slide_in);
 
-        contactList = new ArrayList<>();
-        lv = (ListView)findViewById(R.id.lista);
+        new GetContacts().execute();
 
-        if(savedInstanceState == null) {
-            new GetContacts().execute();
-        }
+        lv = (RecyclerView) findViewById(lista);
 
+        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefresh);
+        refreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        new GetContacts().execute();
+                        refreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    @Override  //Refresh activity
-    protected void onRestart (){
+    @Override
+    protected void onRestart() {
         super.onRestart();
-        Intent i = new Intent(MainActivity.this,MainActivity.class);
-        finish();
-        startActivity(i);
+        new GetContacts().execute();
     }
 
-    private class GetContacts extends AsyncTask<Object, Object, Json_Request> {
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    private class GetContacts extends AsyncTask<Object, Object, List<Orden>> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-            lv.setAdapter(null);
-
         }
 
         @Override
-        protected Json_Request doInBackground(Object... arg0) {
+        protected List<Orden> doInBackground(Object... arg0) {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
+            String url = "http://dabbanet.dabbawala.com.mx/api/v1/customer-orders/?format=json";
             String jsonStr = sh.makeServiceCall(url);
 
-            Json_Request json_request = new Json_Request();
-
             Log.e(TAG, "Response from url: " + jsonStr);
+            List<Orden> lista_de_ordenes = null;
 
             if (jsonStr != null) {
                 try {
 
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    //Leer atributos generales
+                    //Lee el resultado, convierte a arreglo y luego a Lista de ordenes
 
-                    int count = jsonObj.getInt("count");
-                    String next = jsonObj.getString("next");
-                    String previous = jsonObj.getString("previous");
+                    JSONArray array_pedidos = new JSONArray(jsonStr);
+                    lista_de_ordenes = new ArrayList<>();
 
-                    List<Orden> lista_de_ordenes = new ArrayList<>();
-
-                    json_request.setCount(count);
-                    //Leer resultados
-
-                    JSONArray results = jsonObj.getJSONArray("results");
                     // Iterando a todos los resultados de pedidos
 
-                    for (int i = 0; i < results.length(); i++) {
+                    for (int i = 0; i < array_pedidos.length(); i++) {
+
+                        //Crea nueva Orden
 
                         Orden orden = new Orden();
-
                         List<Cartucho> lista_de_cartuchos = new ArrayList<>();
                         List<Paquete> lista_de_paquetes = new ArrayList<>();
 
-                        JSONObject pedido = results.getJSONObject(i);
+                        JSONObject pedido = array_pedidos.getJSONObject(i);
 
-                        //Lee pedido en general
-                        String id_pedido = pedido.getString("id");
-                        String created_at = pedido.getString("created_at");
-                        String delivery_date = pedido.getString("delivery_date");
-
-                        orden.setId(id_pedido);
-                        orden.setCreated_date(created_at);
-                        orden.setDelivery_date(delivery_date);
+                        //Lee orden en general
+                        orden.setId(pedido.getString("id"));
+                        orden.setCreated_date(pedido.getString("created_at"));
+                        orden.setDelivery_date(pedido.getString("delivery_date"));
 
                         //Lee usuario
 
                         JSONObject customer_user = pedido.getJSONObject("customer_user");
-                        Custom_User custom_user = new Custom_User();
-
                         JSONObject user = customer_user.getJSONObject("user");
-                        User_Dabba user1 = new User_Dabba();
-
-                        user1.setId(user.getString("id"));
-                        user1.setEmail(user.getString("email"));
-                        user1.setFirst_name(user.getString("first_name"));
-                        user1.setLast_name(user.getString("last_name"));
-                        String username = user.getString("username");
-                        user1.setUsername(username);
-
                         String phone_number = customer_user.getString("phone_number");
-                        custom_user.setUser(user1);
-                        custom_user.setPhone_number(phone_number);
+
+                        Custom_User custom_user = new Custom_User(
+                                new User_Dabba(
+                                        user.getString("id"),
+                                        user.getString("username"),
+                                        user.getString("first_name"),
+                                        user.getString("last_name"),
+                                        user.getString("email")
+                                ),phone_number);
 
                         orden.setCustom_user(custom_user);
 
                         //Lee lista de combos y platillos
                         JSONArray custom_order_details = pedido.getJSONArray("customer_order_details");
 
-                        for(int cs=0;cs<custom_order_details.length();cs++){
+                        for (int cs = 0; cs < custom_order_details.length(); cs++) {
 
                             Custom_Order custom_order = new Custom_Order();
 
@@ -174,30 +218,23 @@ public class MainActivity extends AppCompatActivity {
                             custom_order.setId(id_orden);
                             custom_order.setQuantity(quantity_element);
 
-                            if(!car){
+                            if (!car) {
 
                                 JSONObject cartridge = element.getJSONObject("cartridge");
 
                                 Cartucho cartucho = new Cartucho();
 
-                                String id_cartucho = cartridge.getString("id");
-                                String name = cartridge.getString("name");
-                                String price = cartridge.getString("price");
-                                String category = cartridge.getString("category");
-                                String image = cartridge.getString("image");
-
-                                cartucho.setId(id_cartucho);
-                                cartucho.setName(name);
-                                cartucho.setCategory(category);
-                                cartucho.setPrice(price);
-                                cartucho.setImage(image);
+                                cartucho.setId(cartridge.getString("id"));
+                                cartucho.setName(cartridge.getString("name"));
+                                cartucho.setCategory(cartridge.getString("category"));
+                                cartucho.setPrice(cartridge.getString("price"));
+                                cartucho.setImage(cartridge.getString("image"));
 
                                 custom_order.setCartucho(cartucho);
-
                                 lista_de_cartuchos.add(cartucho);
                             }
 
-                            if(!paq){
+                            if (!paq) {
 
                                 JSONObject paquete = element.getJSONObject("package_cartridge");
 
@@ -217,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 JSONArray paquete_recipe = paquete.getJSONArray("package_cartridge_recipe");
 
-                                for(int z = 0;z<paquete_recipe.length();z++){
+                                for (int z = 0; z < paquete_recipe.length(); z++) {
 
                                     JSONObject combo = paquete_recipe.getJSONObject(z);
 
@@ -259,87 +296,28 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                        String status = pedido.getString("status");
-                        String price = pedido.getString("price");
-                        String latitude = pedido.getString("latitude");
-                        String longitude = pedido.getString("longitude");
-
-                        orden.setStatus(status);
-                        orden.setPrice(price);
-                        orden.setLatitude(latitude);
-                        orden.setLongitude(longitude);
+                        orden.setStatus(pedido.getString("status"));
+                        orden.setPrice(pedido.getString("price"));
+                        orden.setLatitude(pedido.getString("latitude"));
+                        orden.setLongitude(pedido.getString("longitude"));
                         orden.setLista_de_cartuchos(lista_de_cartuchos);
                         orden.setLista_de_paquetes(lista_de_paquetes);
 
-                        // Converting dateFormat
-
-                        String originalString = delivery_date.substring(0,19);
-                        String show_time = "00:00";
-
-                        try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(originalString);
-                            SimpleDateFormat output = new SimpleDateFormat("HH:mm");
-                            show_time = output.format(date);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        String original_created = created_at.substring(0,19);
-                        String created_date = "00:00";
-
-                        try {
-                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(original_created);
-                            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                            created_date = output.format(date);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        // tmp hash map for single contact
-                        HashMap<String, String> contact = new HashMap<>();
-
-                        // Añadir cada campo al Hash Map ("nombre de atributo",atributo)
-
-                        contact.put("latitude", latitude);
-                        contact.put("longitude", longitude);
-                        contact.put("price", price);
-                        contact.put("customer",username);
-                        contact.put("status",status);
-                        contact.put("created_time",created_date);
-                        contact.put("show_time",show_time);
-                        contact.put("delivery_date",delivery_date);
-
-                        // adding contact to contact list
-
-
                         String delivery_string = orden.getDelivery_date();
 
+                        //Verificar si el pedido es futuro y agregarlo a la lista
                         Date datex = null;
-
                         try {
-                             datex = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(delivery_string);
-
+                            datex = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(delivery_string);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
                         Calendar delivery_cal = toCalendar(datex);
                         Calendar current_date = Calendar.getInstance();
-
-                        if(delivery_cal.getTimeInMillis()>current_date.getTimeInMillis()){
+                        if (delivery_cal.getTimeInMillis() > current_date.getTimeInMillis()) {
                             lista_de_ordenes.add(orden);
-                            contactList.add(contact);
                         }
-
-
                     }
-
-                    json_request.setCount(count);
-                    json_request.setNext(next);
-                    json_request.setPreviuos(previous);
-                    json_request.setResultados(lista_de_ordenes);
-
-
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
@@ -351,8 +329,9 @@ public class MainActivity extends AppCompatActivity {
                                     .show();
                         }
                     });
-
                 }
+
+                return lista_de_ordenes;
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
                 runOnUiThread(new Runnable() {
@@ -364,50 +343,123 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                 });
-
+                return null;
             }
 
-            return json_request;
+
         }
 
         @Override
-        protected void onPostExecute(final Json_Request result) {
+        protected void onPostExecute(final List<Orden> result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
 
-            ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, contactList,
-                    R.layout.list_item, new String[]{"customer","price","status","show_time","created_time"},
-                                        new int[]{R.id.customer,R.id.price, R.id.status,R.id.hour_tv,R.id.created_time});
-
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                    Intent intent = new Intent(MainActivity.this, Tabbed_Requests.class);
-                    intent.putExtra("object", result);
-                    intent.putExtra("position",i);
-                    startActivity(intent);
-
-                }
-            });
+            lv.setHasFixedSize(true);
+            RecyclerView.LayoutManager lManager = new LinearLayoutManager(MainActivity.this);
+            lv.setLayoutManager(lManager);
+            orden = new OrdenAdapter(result);
+            lv.setAdapter(orden);
         }
 
     }
 
-    public static Calendar toCalendar(Date date){
+    public class OrdenAdapter extends RecyclerView.Adapter<OrdenAdapter.OrdenViewHolder> {
+
+        private List<Orden> items;
+
+        class OrdenViewHolder extends RecyclerView.ViewHolder {
+            // Campos respectivos de un item
+
+            TextView customer;
+            TextView price;
+            TextView status;
+            TextView hora_entrega;
+            TextView hora_creacion;
+            CardView card_view;
+
+
+            public OrdenViewHolder(View v) {
+                super(v);
+                customer = (TextView) v.findViewById(R.id.customer);
+                price = (TextView) v.findViewById(R.id.price);
+                status = (TextView) v.findViewById(R.id.status);
+                hora_entrega = (TextView) v.findViewById(R.id.hour_tv);
+                hora_creacion = (TextView) v.findViewById(R.id.created_time);
+                card_view = (CardView) v.findViewById(R.id.card_layout);
+            }
+        }
+
+        OrdenAdapter(List<Orden> items) {
+            this.items = items;
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        @Override
+        public OrdenViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View v = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.card_view, viewGroup, false);
+            return new OrdenViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(OrdenViewHolder viewHolder, final int i) {
+
+            User_Dabba us = items.get(i).getCustom_user().getUser();
+
+            viewHolder.card_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, Tabbed_Requests.class);
+                    intent.putExtra("object", (Serializable) items);
+                    intent.putExtra("position", i);
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                }
+            });
+            viewHolder.customer.setText(us.getFirst_name() + " " + us.getLast_name());
+            viewHolder.status.setText(items.get(i).getStatus());
+            viewHolder.price.setText(items.get(i).getPrice());
+
+            String originalString = items.get(i).getDelivery_date().substring(0, 19);
+            String show_time = "00:00";
+
+            try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(originalString);
+                SimpleDateFormat output = new SimpleDateFormat("HH:mm");
+                show_time = output.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            String original_created = items.get(i).getCreated_date().substring(0, 19);
+            String created_date = "00:00";
+
+            try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(original_created);
+                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                created_date = output.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            viewHolder.hora_creacion.setText(created_date);
+            viewHolder.hora_entrega.setText(show_time);
+
+
+
+        }
+    }
+
+    public static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
 
-    public void notification(){
+    public void notification() {
 
         String ACTION_DISMISS = "Dissmiss";
 

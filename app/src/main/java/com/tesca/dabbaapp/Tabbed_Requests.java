@@ -65,9 +65,9 @@ public class Tabbed_Requests extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        Json_Request object = (Json_Request) getIntent().getSerializableExtra("object");
+        List<Orden> object = (List<Orden>) getIntent().getSerializableExtra("object");
         int position = getIntent().getExtras().getInt("position");
-        lista_resultados = object.getResultados();
+        lista_resultados = object;
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -107,8 +107,8 @@ public class Tabbed_Requests extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(ctxt);
 
-        String url = "http://dabbawala.com.mx/api/v1/customer-orders/" + id +"/status";
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+        String url = "http://dabbanet.dabbawala.com.mx/api/v1/customer-orders/" + id +"/status";
+        StringRequest putRequest = new StringRequest(Request.Method.PATCH, url,
                 new Response.Listener<String>()
                 {
                     @Override

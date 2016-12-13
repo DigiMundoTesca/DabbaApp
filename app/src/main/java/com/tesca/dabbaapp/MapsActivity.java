@@ -19,7 +19,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Visibility;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +81,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        this.overridePendingTransition(R.anim.slide_in,
+                R.anim.slide_out);
 
         mAuth = FirebaseAuth.getInstance();
         // Establecer punto de entrada para la API de ubicación
