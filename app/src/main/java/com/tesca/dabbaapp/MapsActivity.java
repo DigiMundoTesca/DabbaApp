@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,6 +14,8 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -76,6 +79,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FloatingActionButton fab1, fab2;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    String address;
+    AddressResultReceiver mResultReceiver;
+    int fetchType = Constants.USE_ADDRESS_LOCATION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,9 +159,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         countDown(delivery_long, current_long);
 
-        user = (TextView) findViewById(R.id.user_name);
-        user.setText("Cliente\n\t\t"+customer+"\nDirección\n\t\t"+latitude+"\n"+longitude); //Address
+        fetchType = Constants.USE_ADDRESS_LOCATION;
+        GetAddress(latitude, longitude, customer);
 
+        user = (TextView) findViewById(R.id.user_name);
+        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"); //Address
+
+    }
+
+    private void GetAddress(String latitude, String longitude, String customer) {
+        Intent intent = new Intent(this, GeocodeAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
+        if(fetchType == Constants.USE_ADDRESS_LOCATION) {
+            if(latitude.equals(null) || longitude.equals(null)) {
+                Toast.makeText(this,
+                        "Verifique la dirección",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            intent.putExtra(Constants.LOCATION_LATITUDE_DATA_EXTRA,
+                    Double.parseDouble(latitude));
+            intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
+                    Double.parseDouble(longitude));
+        }
+        Log.e(TAG, "Starting Service");
+        startService(intent);
+    }
+
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, final Bundle resultData) {
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                address=resultData.getString(Constants.RESULT_DATA_KEY);
+                final Address address = resultData.getParcelable(Constants.RESULT_ADDRESS);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /*progressBar.setVisibility(View.GONE);
+                        infoText.setVisibility(View.VISIBLE);
+                        infoText.setText("Latitude: " + address.getLatitude() + "\n" +
+                                "Longitude: " + address.getLongitude() + "\n" +*/
+                        user.setText("Address: " + resultData.getString(Constants.RESULT_ADDRESS));
+                    }
+                });
+            }
+            else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /*progressBar.setVisibility(View.GONE);
+                        infoText.setVisibility(View.VISIBLE);*/
+                        user.setText(resultData.getString(Constants.RESULT_ADDRESS));
+                    }
+                });
+            }
+        }
     }
 
     @Override
