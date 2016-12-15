@@ -87,6 +87,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         this.overridePendingTransition(R.anim.slide_in,
                 R.anim.slide_out);
+        mResultReceiver = new AddressResultReceiver(null);
         mAuth = FirebaseAuth.getInstance();
         // Establecer punto de entrada para la API de ubicación
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -120,6 +121,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Date date = null;
 
+        fetchType = Constants.USE_ADDRESS_LOCATION;
+        GetAddress(latitude, longitude, customer);
+
         //19 digitos
 
         try {
@@ -137,11 +141,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         countDown(delivery_long, current_long);
 
-        fetchType = Constants.USE_ADDRESS_LOCATION;
-        GetAddress(latitude, longitude, customer);
-
         user = (TextView) findViewById(R.id.user_name);
-        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"); //Address
+        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+address+"\n"); //Address
 
     }
 
@@ -201,16 +202,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         protected void onReceiveResult(int resultCode, final Bundle resultData) {
             if (resultCode == Constants.SUCCESS_RESULT) {
-                address=resultData.getString(Constants.RESULT_DATA_KEY);
-                final Address address = resultData.getParcelable(Constants.RESULT_ADDRESS);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);
-                        infoText.setText("Latitude: " + address.getLatitude() + "\n" +
-                                "Longitude: " + address.getLongitude() + "\n" +*/
-                        user.setText("Address: " + resultData.getString(Constants.RESULT_ADDRESS));
+                        address=resultData.getString(Constants.RESULT_DATA_KEY);
+                        user.setText(address);
+
                     }
                 });
             }
@@ -218,8 +215,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*progressBar.setVisibility(View.GONE);
-                        infoText.setVisibility(View.VISIBLE);*/
                         user.setText(resultData.getString(Constants.RESULT_ADDRESS));
                     }
                 });
