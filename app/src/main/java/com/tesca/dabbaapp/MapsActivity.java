@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,6 +19,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.test.espresso.core.deps.dagger.internal.DoubleCheckLazy;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
@@ -58,6 +60,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -72,9 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private Location mLastLocation;
-    String address;
-    AddressResultReceiver mResultReceiver;
-    int fetchType = Constants.USE_ADDRESS_LOCATION;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +88,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         this.overridePendingTransition(R.anim.slide_in,
                 R.anim.slide_out);
-        mResultReceiver = new AddressResultReceiver(null);
         mAuth = FirebaseAuth.getInstance();
-        // Establecer punto de entrada para la API de ubicación
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .enableAutoManage(this, this)
-                .build();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -121,8 +114,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Date date = null;
 
-        fetchType = Constants.USE_ADDRESS_LOCATION;
-        GetAddress(latitude, longitude, customer);
+        Double lat = Double.valueOf(latitude);
+        Double lon = Double.valueOf(longitude);
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses  = null;
+        try {
+            addresses = geocoder.getFromLocation(lat,lon,1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String zip = addresses.get(0).getPostalCode();
+        String country = addresses.get(0).getCountryName();
 
         //19 digitos
 
@@ -142,7 +147,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         countDown(delivery_long, current_long);
 
         user = (TextView) findViewById(R.id.user_name);
-        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+address+"\n"); //Address
+        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ addresses +"\n"); //Address
 
     }
 
@@ -172,54 +177,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void GetAddress(String latitude, String longitude, String customer) {
-        Intent intent = new Intent(this, GeocodeAddressIntentService.class);
-        intent.putExtra(Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(Constants.FETCH_TYPE_EXTRA, fetchType);
-        if(fetchType == Constants.USE_ADDRESS_LOCATION) {
-            if(latitude.equals(null) || longitude.equals(null)) {
-                Toast.makeText(this,
-                        "Verifique la dirección",
-                        Toast.LENGTH_LONG).show();
-                return;
-            }
-            intent.putExtra(Constants.LOCATION_LATITUDE_DATA_EXTRA,
-                    Double.parseDouble(latitude));
-            intent.putExtra(Constants.LOCATION_LONGITUDE_DATA_EXTRA,
-                    Double.parseDouble(longitude));
-        }
-        Log.e(TAG, "Starting Service");
-        startService(intent);
-    }
-
-    class AddressResultReceiver extends ResultReceiver {
-        public AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, final Bundle resultData) {
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        address=resultData.getString(Constants.RESULT_DATA_KEY);
-                        user.setText(address);
-
-                    }
-                });
-            }
-            else {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        user.setText(resultData.getString(Constants.RESULT_ADDRESS));
-                    }
-                });
-            }
-        }
     }
 
     @Override
