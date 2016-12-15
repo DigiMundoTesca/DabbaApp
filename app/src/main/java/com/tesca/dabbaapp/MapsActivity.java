@@ -161,7 +161,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MapsActivity.this, Tabbed_Requests.class);
+            Intent intent = new Intent(MapsActivity.this, MainActivity.class);
             startActivity(intent);
             return true;
         }

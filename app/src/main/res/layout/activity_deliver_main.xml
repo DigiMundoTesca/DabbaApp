@@ -77,10 +77,11 @@
             >
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/delivery_session_text"
+                android:text="@string/btn_Log"
+                android:textAlignment="center"
                 android:theme="@style/RaisedButtonDark"
                 android:onClick="goDeliveryId"
                 />
