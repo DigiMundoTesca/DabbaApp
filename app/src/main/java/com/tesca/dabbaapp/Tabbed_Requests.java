@@ -1,8 +1,5 @@
 package com.tesca.dabbaapp;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +58,7 @@ public class Tabbed_Requests extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Contenido de la entrega");
+        mAuth = FirebaseAuth.getInstance();
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
@@ -82,7 +79,7 @@ public class Tabbed_Requests extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tabbed__requests, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -98,6 +95,10 @@ public class Tabbed_Requests extends AppCompatActivity {
             Intent intent = new Intent(Tabbed_Requests.this, MainActivity.class);
             startActivity(intent);
             return true;
+        }
+        else if (id == R.id.logout){
+            mAuth.signOut();
+            startActivity(new Intent(Tabbed_Requests.this, LoginActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
