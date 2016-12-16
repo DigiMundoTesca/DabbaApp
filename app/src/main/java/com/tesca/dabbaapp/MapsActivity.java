@@ -89,6 +89,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.overridePendingTransition(R.anim.slide_in,
                 R.anim.slide_out);
         mAuth = FirebaseAuth.getInstance();
+        // Establecer punto de entrada para la API de ubicación
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, this)
+                .build();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -125,10 +132,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         String city = addresses.get(0).getLocality();
+        String line = addresses.get(0).getAddressLine(0);
         String state = addresses.get(0).getAdminArea();
         String zip = addresses.get(0).getPostalCode();
         String country = addresses.get(0).getCountryName();
-
+        String address = line + " " + state + " " + zip + " " + country + " ";
         //19 digitos
 
         try {
@@ -147,7 +155,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         countDown(delivery_long, current_long);
 
         user = (TextView) findViewById(R.id.user_name);
-        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ addresses +"\n"); //Address
+        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n"); //Address
 
     }
 
