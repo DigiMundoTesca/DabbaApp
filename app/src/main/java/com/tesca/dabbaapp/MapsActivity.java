@@ -65,6 +65,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -136,9 +138,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String state = addresses.get(0).getAdminArea();
         String zip = addresses.get(0).getPostalCode();
         String country = addresses.get(0).getCountryName();
-        String address = line + " " + state + " " + zip + " " + country + " ";
-        //19 digitos
+        String address = line + ", " + state + ", " + zip + ", " + country + " ";
 
+        //19 digitos
         try {
             String delivery_Date_use = delivery_time.substring(0, 19);
             date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(delivery_Date_use);
@@ -442,17 +444,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onTick(long millisUntilFinished) {
 
                 String a = String.format("%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                        MILLISECONDS.toHours(millisUntilFinished),
+                        MILLISECONDS.toMinutes(millisUntilFinished) -
+                                TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
+                String b = String.format("%02d%02d",
+                        MILLISECONDS.toMinutes(millisUntilFinished) -
+                        TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
+                Integer c = 2000;
+                Integer d = 1000;
 
-                if(a.equals("00:20:00")){
+                if(Integer.valueOf(b) <= c){
                     textView.setBackgroundColor(Color.YELLOW);
                 }
-                if(a.equals("00:10:00")){
+                if(Integer.valueOf(b) <= d){
                     textView.setBackgroundColor(Color.RED);
+                }
+                if (a.equals("00:10:00")){
                     dialog();
                 }
                 textView.setText(a);
