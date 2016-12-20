@@ -470,9 +470,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (a.equals("00:10:00")){
                     dialog();
                 }
-                if (a.equals("00:20:00")){
-                    establecerAlarmaClick(1);
-                }
                 textView.setText(a);
             }
 
@@ -481,15 +478,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }.start();
 
-    }
-
-    private void establecerAlarmaClick(int when){
-        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
-        Intent 	 	 intent  = new Intent(this, MyReceiver.class);
-        PendingIntent pIntent = PendingIntent.getBroadcast(this, ALARM_REQUEST_CODE, intent,  PendingIntent.FLAG_CANCEL_CURRENT);
-
-        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + when * 1000, pIntent);
     }
 
     public static Calendar toCalendar(Date date){
