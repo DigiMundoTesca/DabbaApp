@@ -116,8 +116,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String delivery_time = extras.getDelivery_date();
         String price = "100";
 
-        Log.v("Orden", longitude + "  " + latitude);
-
         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
         destination = latlng;
 
@@ -507,8 +505,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }, 5000); // Starts activity after 5 seconds
     }
 
-    private void notif()  //Local notification
-    {
+    private void notif(){
 
         NotificationCompat.Builder  notif = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.moto2)

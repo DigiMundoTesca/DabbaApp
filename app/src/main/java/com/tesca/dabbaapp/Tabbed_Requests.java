@@ -1,9 +1,12 @@
 package com.tesca.dabbaapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -19,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +58,9 @@ public class Tabbed_Requests extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed__requests);
+
+        this.overridePendingTransition(R.anim.slide_out,
+                R.anim.slide_in);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,11 +111,11 @@ public class Tabbed_Requests extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void makeServicePut(Context ctxt, String id, final String status){
+    public static void makeServicePut(Context ctxt, String id, final String status, final String atribute){
 
         RequestQueue queue = Volley.newRequestQueue(ctxt);
 
-        String url = "http://dabbanet.dabbawala.com.mx/api/v1/customer-orders/" + id +"/status";
+        String url = "http://dabbanet.dabbawala.com.mx/api/v1/customer-orders/" + id +"/" + atribute;
         StringRequest putRequest = new StringRequest(Request.Method.PATCH, url,
                 new Response.Listener<String>()
                 {
@@ -129,7 +136,7 @@ public class Tabbed_Requests extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams(){
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("status", status);
+                params.put(atribute, status);
 
                 return params;
             }
@@ -149,10 +156,10 @@ public class Tabbed_Requests extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static List<Orden> lista;
+        public List<Orden> lista;
 
         public PlaceholderFragment(List<Orden> lista) {
-            PlaceholderFragment.lista =lista;
+            this.lista =lista;
         }
 
         /**
@@ -268,7 +275,7 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fab1.setVisibility(View.GONE);
                     fab2.setVisibility(View.VISIBLE);
                     fab3.setVisibility(View.VISIBLE);
-                    makeServicePut(getContext(),lista.get(a).getId(),"PR");
+                    makeServicePut(getContext(),lista.get(a).getId(),"PR","status");
                     fam.close(true);
                 }
             });
@@ -280,8 +287,10 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fab1.setVisibility(View.VISIBLE);
                     fab2.setVisibility(View.GONE);
                     fab3.setVisibility(View.VISIBLE);
-                    makeServicePut(getContext(),lista.get(a).getId(),"SO");
+                    makeServicePut(getContext(),lista.get(a).getId(),"SO","status");
                     fam.close(true);
+
+                    Alertdialog(lista.get(a).getId(),getActivity());
 
                 }
             });
@@ -293,7 +302,7 @@ public class Tabbed_Requests extends AppCompatActivity {
                     fab1.setVisibility(View.VISIBLE);
                     fab2.setVisibility(View.VISIBLE);
                     fab3.setVisibility(View.GONE);
-                    makeServicePut(getContext(),lista.get(a).getId(),"CA");
+                    makeServicePut(getContext(),lista.get(a).getId(),"CA","status");
                     fam.close(true);
                 }
             });
@@ -302,6 +311,36 @@ public class Tabbed_Requests extends AppCompatActivity {
 
             return rootView;
         }
+    }
+
+    public static void Alertdialog(final String id_list, final FragmentActivity activity){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+        builder1.setMessage("Califica tu pedido");
+        builder1.setCancelable(true);
+        View view = View.inflate(activity,R.layout.star_layour,null);
+        builder1.setView(view);
+
+        final RatingBar rb = (RatingBar)view.findViewById(R.id.ratingBar);
+        final TextView text = (TextView)view.findViewById(R.id.textView8);
+
+        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                text.setText(activity.getResources().getStringArray(R.array.stars)[((int)v)-1]);
+            }
+        });
+
+        builder1.setNeutralButton(
+                "Calificar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        makeServicePut(activity,id_list, String.valueOf(rb.getRating()),"score");
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     /**

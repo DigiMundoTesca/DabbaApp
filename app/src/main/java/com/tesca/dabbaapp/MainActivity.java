@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setTitle("Lista de Entregas");
         mAuth = FirebaseAuth.getInstance();
-
-        this.overridePendingTransition(R.anim.slide_out,
-                R.anim.slide_in);
 
         new GetContacts().execute();
 
@@ -102,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        final Handler handler = new Handler();
+        handler.postDelayed( new Runnable() {
+
+            @Override
+            public void run() {
+                new GetContacts().execute();
+                handler.postDelayed( this, 60 * 1000 );
+            }
+        }, 60 * 1000 );
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
