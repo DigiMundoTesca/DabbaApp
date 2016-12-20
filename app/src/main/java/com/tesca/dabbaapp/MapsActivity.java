@@ -1,6 +1,8 @@
 package com.tesca.dabbaapp;
 
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -77,6 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private Location mLastLocation;
+    private static final int ALARM_REQUEST_CODE = 1;
 
 
     @Override
@@ -447,13 +450,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
                         MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
-                String b = String.format("%02d%02d",
+                String b = String.format("%02d%02d%02d",
+                        MILLISECONDS.toHours(millisUntilFinished),
                         MILLISECONDS.toMinutes(millisUntilFinished) -
-                        TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                                TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
                         MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
-                Integer c = 2000;
-                Integer d = 1000;
+                Integer c = 002000;
+                Integer d = 001000;
 
                 if(Integer.valueOf(b) <= c){
                     textView.setBackgroundColor(Color.YELLOW);
