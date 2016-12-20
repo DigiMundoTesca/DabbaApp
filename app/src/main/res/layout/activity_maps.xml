@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_interfaz_pedidos"
     android:layout_width="match_parent"
@@ -14,6 +14,25 @@
     android:orientation="vertical"
     android:weightSum="1"
     android:padding="0dp">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:orientation="vertical"
@@ -37,7 +56,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -48,8 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/user_name"
-            android:textSize="24sp"
-            android:text="Cliente\n\tPedro Perez\nDirección:\n\t\t--------------------------
+            android:textSize="26sp"
+            android:text="Cliente\n\t\tPedro Perez\nDirección:\n\t\t--------------------------
             --------------------------"
             android:layout_alignBottom="@+id/material_design_android_floating_action_menu"
             android:layout_alignParentLeft="true"
@@ -68,65 +87,6 @@
             android:layout_width="120dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-
-        <com.github.clans.fab.FloatingActionMenu
-            android:id="@+id/material_design_android_floating_action_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="59dp"
-            android:layout_marginRight="11dp"
-            fab:menu_animationDelayPerItem="55"
-            fab:menu_backgroundColor="@android:color/transparent"
-            fab:menu_buttonSpacing="0dp"
-            fab:menu_colorNormal="#da3c2f"
-            fab:menu_colorPressed="#dc4b3f"
-            fab:menu_colorRipple="#99d4d4d4"
-            fab:menu_fab_size="normal"
-            fab:menu_icon="@drawable/fab_add"
-            fab:menu_labels_colorNormal="#333"
-            fab:menu_labels_colorPressed="#444"
-            fab:menu_labels_colorRipple="#66efecec"
-            fab:menu_labels_cornerRadius="3dp"
-            fab:menu_labels_ellipsize="none"
-            fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-            fab:menu_labels_margin="0dp"
-            fab:menu_labels_maxLines="-1"
-            fab:menu_labels_padding="8dp"
-            fab:menu_labels_position="left"
-            fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-            fab:menu_labels_showShadow="true"
-            fab:menu_labels_singleLine="false"
-            fab:menu_labels_textColor="#f2f1f1"
-            fab:menu_labels_textSize="15sp"
-            fab:menu_openDirection="up"
-            fab:menu_shadowColor="#66aff198"
-            fab:menu_shadowRadius="4dp"
-            fab:menu_shadowXOffset="1dp"
-            fab:menu_shadowYOffset="4dp"
-            fab:menu_showShadow="true"
-            android:layout_marginEnd="11dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true">
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/face"
-                fab:fab_label="@string/logout"
-                fab:fab_size="mini" />
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/moto"
-                fab:fab_label="@string/deliver_list"
-                fab:fab_size="mini" />
-
-        </com.github.clans.fab.FloatingActionMenu>
-
 
     </RelativeLayout>
 

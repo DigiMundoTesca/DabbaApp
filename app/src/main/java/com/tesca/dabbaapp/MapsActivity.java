@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,23 +15,22 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.test.espresso.core.deps.dagger.internal.DoubleCheckLazy;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.Visibility;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -59,32 +60,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
     private LatLng destination = new LatLng(19.525170, -99.226120);
     private TextView textView, user, status_tv, costo_tv, id_tv;
-    private FirebaseAuth mAuth;
-    FloatingActionMenu fam;
-    FloatingActionButton fab1, fab2;
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
     private Location mLastLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle("Mapa");
+
         this.overridePendingTransition(R.anim.slide_in,
                 R.anim.slide_out);
-
         mAuth = FirebaseAuth.getInstance();
         // Establecer punto de entrada para la API de ubicación
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -93,24 +98,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addApi(LocationServices.API)
                 .enableAutoManage(this, this)
                 .build();
-
-        fam = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        fab1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
-        fab2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
-
-        fab1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mAuth.signOut();
-                //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                startActivity(new Intent(MapsActivity.this, LoginActivity.class));
-            }
-        });
-        fab2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -136,8 +123,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Date date = null;
 
-        //19 digitos
+        Double lat = Double.valueOf(latitude);
+        Double lon = Double.valueOf(longitude);
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses  = null;
+        try {
+            addresses = geocoder.getFromLocation(lat,lon,1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        String city = addresses.get(0).getLocality();
+        String line = addresses.get(0).getAddressLine(0);
+        String state = addresses.get(0).getAdminArea();
+        String zip = addresses.get(0).getPostalCode();
+        String country = addresses.get(0).getCountryName();
+        String address = line + ", " + state + ", " + zip + ", " + country + " ";
+
+        //19 digitos
         try {
             String delivery_Date_use = delivery_time.substring(0, 19);
             date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(delivery_Date_use);
@@ -154,8 +157,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         countDown(delivery_long, current_long);
 
         user = (TextView) findViewById(R.id.user_name);
-        user.setText("Cliente\n\t\t"+customer+"\nDirección\n\t\t"+latitude+"\n"+longitude); //Address
+        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n"); //Address
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.logout){
+            mAuth.signOut();
+            startActivity(new Intent(MapsActivity.this, LoginActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -413,17 +444,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onTick(long millisUntilFinished) {
 
                 String a = String.format("%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                        MILLISECONDS.toHours(millisUntilFinished),
+                        MILLISECONDS.toMinutes(millisUntilFinished) -
+                                TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
+                String b = String.format("%02d%02d",
+                        MILLISECONDS.toMinutes(millisUntilFinished) -
+                        TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
+                Integer c = 2000;
+                Integer d = 1000;
 
-                if(a.equals("00:20:00")){
+                if(Integer.valueOf(b) <= c){
                     textView.setBackgroundColor(Color.YELLOW);
                 }
-                if(a.equals("00:10:00")){
+                if(Integer.valueOf(b) <= d){
                     textView.setBackgroundColor(Color.RED);
+                }
+                if (a.equals("00:10:00")){
                     dialog();
                 }
                 textView.setText(a);
