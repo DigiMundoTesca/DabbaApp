@@ -26,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         //Jerarquia padre para Deliverman Login
         <activity
             android:name=".LoginActivity"
@@ -37,7 +36,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DeliverMainActivity" />
         </activity>
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -54,16 +52,25 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".MainActivity"
-            android:label="Main"/>
+        <activity
+            android:name=".MainActivity"
+            android:label="Main" />
         <activity
             android:name=".Tabbed_Requests"
             android:label="@string/title_activity_tabbed__requests"
-            android:theme="@style/AppTheme.NoActionBar"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <service
+            android:name=".AlarmService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
