@@ -274,9 +274,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            Toast.makeText(this, "Ubicación encontrada", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ubicación encontrada", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ubicación no encontrada", Toast.LENGTH_SHORT).show();
         }
     }
 
