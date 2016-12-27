@@ -3,70 +3,81 @@ package com.tesca.dabbaapp;
 import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
 public class AlarmService extends IntentService {
 
     private static final String ACTION_ALARM = "com.tesca.dabbaapp.action.FOO";
 
+
     public AlarmService() {
         super("AlarmService");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ALARM.equals(action)) {
-                handleActionAlarm();
+    protected void onHandleIntent(final Intent intent) {
+
+        final Long hora = intent.getExtras().getLong("hora");
+
+        new CountDownTimer(hora, 1000) {
+            public void onTick(long millisUntilFinished) {
+                String a = String.format("%02d:%02d:%02d",
+                        MILLISECONDS.toHours(millisUntilFinished),
+                        MILLISECONDS.toMinutes(millisUntilFinished) -
+                                TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
+                        MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
+                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+                if (a.equals("00:15:00")) {
+                    handleActionAlarm(a);
+                }
+                if (a.equals("00:05:00")){
+                    handleActionAlarm(a);
+                }
             }
-        }
-    }
 
-
-    private void handleActionAlarm() {
-
-        // Intent para iniciar la aplicación
-        startActivity(new Intent(AlarmService.this, Tabbed_Requests.class));
-
-        // Mostrar Fragment con alarma
-        dialog();
-
-    }
-
-    private void dialog() //Alert dialog
-    {
-
-        final AlertFragment dialog = new AlertFragment();
-        dialog.show(SupportFragmentManager(), "dialog");
-        final MediaPlayer mp = MediaPlayer.create(AlarmService.this, R.raw.alert);
-        mp.start();
-
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
+            public void onFinish() {
 
-        final Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            public void run() {
-                dialog.dismiss(); // Close alert dialog
-                t.cancel(); // Stop timer to avoid crash report
             }
-        }, 5000); // Starts activity after 5 seconds
+        }.start();
     }
 
-    private android.support.v4.app.FragmentManager SupportFragmentManager() {
-        return null;
+
+    private void handleActionAlarm(String a) {
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.moto2)
+                        .setContentTitle("Alerta")
+                        .setContentText("Te faltan" + a + "minutos")
+                        .setDefaults(Notification.DEFAULT_ALL) // must requires VIBRATE permission
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                //to post your notification to the notification bar with a id. If a notification with same id already exists, it will get replaced with updated information.
+        notificationManager.notify(0, builder.build());
+
+
     }
+
 
 }

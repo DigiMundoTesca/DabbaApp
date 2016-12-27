@@ -56,6 +56,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -73,7 +74,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -159,6 +160,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Calendar c = Calendar.getInstance();
         long current_long = c.getTimeInMillis();
 
+        Long hora = delivery_long-current_long;
+
         countDown(delivery_long, current_long);
 
         user = (TextView) findViewById(R.id.user_name);
@@ -173,6 +176,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 receiver, filter);
         // Ejecutar el ServiceIntent
         Intent intent = new Intent(this, AlarmService.class);
+        intent.putExtra("hora",hora);
         startService(intent);
 
     }
@@ -188,7 +192,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case Excecute_Alarm:
-                    //Toast.makeText(this, "Servicio destruido...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Servicio destruido...", Toast.LENGTH_SHORT).show();
                     break;
 
                 /*case Constants.ACTION_RUN_ISERVICE:
