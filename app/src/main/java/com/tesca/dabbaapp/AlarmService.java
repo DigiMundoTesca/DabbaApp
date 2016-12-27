@@ -26,6 +26,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class AlarmService extends IntentService {
 
     private static final String ACTION_ALARM = "com.tesca.dabbaapp.action.FOO";
+    private boolean quit;
 
 
     public AlarmService() {
@@ -37,6 +38,12 @@ public class AlarmService extends IntentService {
 
         final Long hora = intent.getExtras().getLong("hora");
 
+        countDown(hora);
+
+
+    }
+
+    private void countDown(Long hora) {
         new CountDownTimer(hora, 1000) {
             public void onTick(long millisUntilFinished) {
                 String a = String.format("%02d:%02d:%02d",
@@ -56,7 +63,7 @@ public class AlarmService extends IntentService {
 
             @Override
             public void onFinish() {
-
+                onDestroy();
             }
         }.start();
     }
@@ -77,6 +84,13 @@ public class AlarmService extends IntentService {
         notificationManager.notify(0, builder.build());
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.quit = true;
+        System.out.println("Service is Destroyed");
     }
 
 
