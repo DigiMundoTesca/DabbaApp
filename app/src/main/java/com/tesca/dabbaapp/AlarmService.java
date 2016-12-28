@@ -1,23 +1,11 @@
 package com.tesca.dabbaapp;
 
-import android.app.AlarmManager;
-import android.app.FragmentManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -27,6 +15,7 @@ public class AlarmService extends IntentService {
 
     private static final String ACTION_ALARM = "com.tesca.dabbaapp.action.FOO";
     private boolean quit;
+    private int count;
 
 
     public AlarmService() {
@@ -35,37 +24,40 @@ public class AlarmService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intent) {
-
         final Long hora = intent.getExtras().getLong("hora");
-
-        countDown(hora);
-
-
+        if (intent != null) {
+            countDown(hora);
+        }
     }
 
     private void countDown(Long hora) {
-        new CountDownTimer(hora, 1000) {
-            public void onTick(long millisUntilFinished) {
-                String a = String.format("%02d:%02d:%02d",
-                        MILLISECONDS.toHours(millisUntilFinished),
-                        MILLISECONDS.toMinutes(millisUntilFinished) -
-                                TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(millisUntilFinished)), // The change is in this line
-                        MILLISECONDS.toSeconds(millisUntilFinished) -
-                                TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(millisUntilFinished)));
-                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
-                if (a.equals("00:15:00")) {
-                    handleActionAlarm(a);
-                }
-                if (a.equals("00:05:00")){
-                    handleActionAlarm(a);
-                }
-            }
 
-            @Override
-            public void onFinish() {
-                onDestroy();
+        String a = String.format("%02d%02d%02d",
+                MILLISECONDS.toHours(hora),
+                MILLISECONDS.toMinutes(hora) -
+                        TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(hora)), // The change is in this line
+                MILLISECONDS.toSeconds(hora) -
+                        TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(hora)));
+
+        while (!a.equals("000000"))
+        {
+            try
+            {
+                Thread.sleep(1000);
             }
-        }.start();
+            catch (InterruptedException e)
+            {
+            }
+            if (a.equals("001500")) {
+                handleActionAlarm(a);
+            }
+            if (a.equals("000500")){
+                handleActionAlarm(a);
+            }
+            count++;
+            int b = Integer.valueOf(a)-count;
+            a = Integer.toString(b);
+        }
     }
 
 
