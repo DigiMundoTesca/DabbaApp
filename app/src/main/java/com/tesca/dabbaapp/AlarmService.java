@@ -27,7 +27,35 @@ public class AlarmService extends IntentService {
     @Override
     protected void onHandleIntent(final Intent intent) {
         final Long hora = intent.getExtras().getLong("hora");
+        String a = String.format("%02d%02d%02d",
+                MILLISECONDS.toHours(hora),
+                MILLISECONDS.toMinutes(hora) -
+                        TimeUnit.HOURS.toMinutes(MILLISECONDS.toHours(hora)), // The change is in this line
+                MILLISECONDS.toSeconds(hora) -
+                        TimeUnit.MINUTES.toSeconds(MILLISECONDS.toMinutes(hora)));
+        Toast.makeText(getApplicationContext(),a,Toast.LENGTH_SHORT).show();
         if (intent != null) {
+            while (!a.equals("000000"))
+            {
+                try
+                {
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e)
+                {
+                }
+                if (a.equals("001500")) {
+                    handleActionAlarm(a);
+                }
+                if (a.equals("000500")){
+                    handleActionAlarm(a);
+                }
+                count++;
+                int b = Integer.valueOf(a)-count;
+                a = Integer.toString(b);
+                System.out.println(a);
+                //Toast.makeText(getApplicationContext(),a,Toast.LENGTH_SHORT).show();
+            }
             countDown(hora);
             System.out.println("Servicio iniciado");
             Toast.makeText(getApplicationContext(),"Servicio Iniciado",Toast.LENGTH_SHORT).show();
