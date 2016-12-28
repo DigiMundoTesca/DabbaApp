@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
+
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -27,6 +29,8 @@ public class AlarmService extends IntentService {
         final Long hora = intent.getExtras().getLong("hora");
         if (intent != null) {
             countDown(hora);
+            System.out.println("Servicio iniciado");
+            Toast.makeText(getApplicationContext(),"Servicio Iniciado",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -57,6 +61,8 @@ public class AlarmService extends IntentService {
             count++;
             int b = Integer.valueOf(a)-count;
             a = Integer.toString(b);
+            System.out.println(a);
+            Toast.makeText(getApplicationContext(),a,Toast.LENGTH_SHORT).show();
         }
     }
 

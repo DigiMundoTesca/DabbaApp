@@ -175,9 +175,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 receiver, filter);
         // Ejecutar el ServiceIntent
-        Intent intent = new Intent(this, AlarmService.class);
-        intent.putExtra("hora",hora);
-        startService(intent);
+        Intent servicio = new Intent(this, AlarmService.class);
+        servicio.putExtra("hora",hora);
+        startService(servicio);
 
     }
 
