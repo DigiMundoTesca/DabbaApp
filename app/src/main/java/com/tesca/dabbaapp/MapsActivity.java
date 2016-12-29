@@ -329,8 +329,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             builder.include(changed_position);
 
             LatLngBounds bounds = builder.build();
-
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 14);
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 20);
 
             mMap.animateCamera(cu);
         }
@@ -348,23 +347,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     }
-
-    public static void midPoint(double lat1,double lon1,double lat2, double lon2){
-        double dLon = Math.toRadians(lon2 - lon1);
-
-        //convert to radians
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-        lon1 = Math.toRadians(lon1);
-
-        double Bx = Math.cos(lat2) * Math.cos(dLon);
-        double By = Math.cos(lat2) * Math.sin(dLon);
-        double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2),Math.sqrt((Math.cos(lat1) + Bx) + By * By));
-        double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
-
-
-    }
-
 
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";

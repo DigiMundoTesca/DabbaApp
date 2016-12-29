@@ -69,11 +69,9 @@ public class LoginActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 if(firebaseAuth.getCurrentUser() != null){
-
                     // User is signed in
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     //Cambiar por DaliverNavigation
-
                 }
             }
         };
@@ -98,8 +96,6 @@ public class LoginActivity extends AppCompatActivity implements
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-
     }
 
 

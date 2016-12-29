@@ -268,7 +268,7 @@ public class Tabbed_Requests extends AppCompatActivity {
 
                     String pin = lista.get(a).getPin();
 
-                    LockDialog(getActivity(),lista.get(a).getId(),pin);
+                    LockDialog("Pin",getActivity(),lista.get(a).getId(),pin);
 
 
                 }
@@ -293,9 +293,9 @@ public class Tabbed_Requests extends AppCompatActivity {
 
     }
 
-    public static void LockDialog(final FragmentActivity activity, final String id, final String pin) {
+    public static void LockDialog(String message, final FragmentActivity activity, final String id, final String pin) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
-        builder1.setMessage("Firma del Cliente");
+        builder1.setMessage(message);
         builder1.setCancelable(true);
         View view = View.inflate(activity,R.layout.edit_text,null);
         builder1.setView(view);
@@ -311,13 +311,11 @@ public class Tabbed_Requests extends AppCompatActivity {
                 if(pin_introducido.equals(pin)){
                     Alertdialog(id,activity);
                 }else{
-                    Toast.makeText(activity, "Pin Incorrecto", Toast.LENGTH_SHORT).show();
+                    LockDialog("Pin Incorrecto",activity,id,pin);
                 }
 
             }
         });
-
-
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
