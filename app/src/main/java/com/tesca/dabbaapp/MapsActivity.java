@@ -1,8 +1,6 @@
 package com.tesca.dabbaapp;
 
-import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,22 +17,15 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.test.espresso.core.deps.dagger.internal.DoubleCheckLazy;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +37,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -79,7 +69,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.InfoWindowAdapter, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -151,6 +141,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         address = line + ", " + state + ", " + zip + ", " + country + " ";
         info = "Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n";
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = inflater.inflate(R.layout.infowindow, null);
+                ((TextView)v.findViewById(R.id.infowindow)).setText(info);
+                //marker.showInfoWindow();
+                return null;
+            }
+        });
+
         //19 digitos
         try {
             String delivery_Date_use = delivery_time.substring(0, 19);
@@ -185,18 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         servicio.setAction(Excecute_Alarm);
         startService(servicio);
 
-    }
 
-    @Override
-    public View getInfoWindow(Marker marker) {
-        return null;
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
-        View v = inflater.inflate(R.layout.infowindow, null);
-        ((TextView)v.findViewById(R.id.infowindow)).setText(info);
-        return null;
     }
 
     // Broadcast receiver que recibe las emisiones desde los servicios
@@ -468,6 +462,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
+
 
 
     }
