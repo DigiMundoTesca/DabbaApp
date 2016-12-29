@@ -177,6 +177,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Ejecutar el ServiceIntent
         Intent servicio = new Intent(this, AlarmService.class);
         servicio.putExtra("hora",hora);
+        servicio.putExtra("alarma",Excecute_Alarm);
         startService(servicio);
 
     }
