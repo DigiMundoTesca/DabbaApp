@@ -329,7 +329,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             LatLng changed_position = new LatLng(loc.getLatitude(), loc.getLongitude());
             String url = getDirectionsUrl(changed_position, destination);
-            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(changed_position,mMap.getCameraPosition().zoom)); //Animate the camera to follow position
 
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
@@ -340,7 +339,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .tilt(50)
                     .build();
 
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder));
+            double dLon = Math.toRadians(destination.longitude - changed_position.longitude);
+
+            double lat1 = Math.toRadians(changed_position.latitude);
+            double lat2 = Math.toRadians(destination.latitude);
+            double lon1 = Math.toRadians(changed_position.longitude);
+
+            double Bx = Math.cos(lat2) * Math.cos(dLon);
+            double By = Math.cos(lat2) * Math.sin(dLon);
+            double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2),Math.sqrt((Math.cos(lat1) + Bx) + By * By));
+            double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
+
+            LatLng middlepoint = new LatLng(lat3,lon3);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(middlepoint, 15));
         }
 
         @Override
@@ -355,6 +367,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     }
+
+    public static void midPoint(double lat1,double lon1,double lat2, double lon2){
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        //convert to radians
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+        lon1 = Math.toRadians(lon1);
+
+        double Bx = Math.cos(lat2) * Math.cos(dLon);
+        double By = Math.cos(lat2) * Math.sin(dLon);
+        double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2),Math.sqrt((Math.cos(lat1) + Bx) + By * By));
+        double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
+
+
+    }
+
 
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
@@ -476,6 +505,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
+
+
     }
 
     private void countDown(long b, long a){
