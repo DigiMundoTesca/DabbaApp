@@ -151,7 +151,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public View getInfoContents(Marker marker) {
                 View v = inflater.inflate(R.layout.infowindow, null);
                 ((TextView)v.findViewById(R.id.infowindow)).setText(info);
-                marker.showInfoWindow();
+                //marker.showInfoWindow();
                 return null;
             }
         });
