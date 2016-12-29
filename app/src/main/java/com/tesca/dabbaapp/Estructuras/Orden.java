@@ -19,6 +19,7 @@ public class Orden implements Serializable{
     String price;
     String latitude;
     String longitude;
+    String pin;
 
     public Custom_User getCustom_user() {
         return custom_user;
@@ -29,6 +30,14 @@ public class Orden implements Serializable{
     }
 
     public Orden() {
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     public String getId() {

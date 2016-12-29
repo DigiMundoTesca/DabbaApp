@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -294,7 +295,9 @@ public class Tabbed_Requests extends AppCompatActivity {
                     makeServicePut(getContext(),lista.get(a).getId(),"SO","status");
                     fam.close(true);
 
-                    LockDialog(getActivity());
+                    String pin = lista.get(a).getPin();
+
+                    LockDialog(getActivity(),lista.get(a).getId(),pin);
 
 
                 }
@@ -319,30 +322,25 @@ public class Tabbed_Requests extends AppCompatActivity {
 
     }
 
-    public static void LockDialog(FragmentActivity activity) {
+    public static void LockDialog(final FragmentActivity activity, final String id, final String pin) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
         builder1.setMessage("Firma del Cliente");
         builder1.setCancelable(true);
-        View view = View.inflate(activity,R.layout.lock_design,null);
+        View view = View.inflate(activity,R.layout.edit_text,null);
         builder1.setView(view);
 
-        final Button button_9 = (Button)view.findViewById(R.id.button9);
-        final Button button_10 = (Button)view.findViewById(R.id.button10);
+        final EditText et = (EditText)view.findViewById(R.id.edit);
 
-        System.out.println(button_10.getX());
-
-        button_9.setOnTouchListener(new View.OnTouchListener() {
+        builder1.setNeutralButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setColor(Color.RED);
-                mPaint.setStrokeWidth(25);
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-                Canvas canvas = new Canvas();
+                String pin_introducido = et.getText().toString();
 
-                canvas.drawLine(button_9.getX(),button_9.getY(),button_10.getX(),button_10.getY(),mPaint);
-                return false;
+                if(pin_introducido.equals(pin)){
+                    Alertdialog(id,activity);
+                }
+
             }
         });
 

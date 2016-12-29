@@ -347,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
                         orden.setPrice(pedido.getString("price"));
                         orden.setLatitude(pedido.getString("latitude"));
                         orden.setLongitude(pedido.getString("longitude"));
+                        orden.setPin(pedido.getString("pin"));
                         orden.setLista_de_cartuchos(lista_de_cartuchos);
                         orden.setLista_de_paquetes(lista_de_paquetes);
 
@@ -500,14 +501,13 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-
             viewHolder.hora_creacion.setText(created_date);
             viewHolder.hora_entrega.setText(show_time);
 
-
-
         }
     }
+
+
 
     public static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();

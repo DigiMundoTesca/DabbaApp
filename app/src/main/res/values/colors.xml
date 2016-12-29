@@ -17,6 +17,6 @@
     <color name="orange">#FF9800</color>
     <color name="trans">#CCFFFFFF</color>
     <color name="done">#4CAF50</color>
-    <color name="canceled">#D32F2F</color>
+    <color name="canceled">#d32f2f</color>
 
 </resources>
