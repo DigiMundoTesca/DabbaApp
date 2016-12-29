@@ -79,7 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
     private LatLng destination = new LatLng(19.525170, -99.226120);
-    private TextView textView, user, status_tv, costo_tv, id_tv;
+    private TextView textView;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private Location mLastLocation;
@@ -160,8 +160,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         countDown(delivery_long, current_long);
 
-        user = (TextView) findViewById(R.id.user_name);
-        user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n"); //Address
+        //user = (TextView) findViewById(R.id.user_name);
+        //user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n"); //Address
 
         // Filtro de acciones
         IntentFilter filter =  new IntentFilter(Excecute_Alarm);
