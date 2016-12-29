@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -290,7 +294,8 @@ public class Tabbed_Requests extends AppCompatActivity {
                     makeServicePut(getContext(),lista.get(a).getId(),"SO","status");
                     fam.close(true);
 
-                    Alertdialog(lista.get(a).getId(),getActivity());
+                    LockDialog(getActivity());
+
 
                 }
             });
@@ -311,6 +316,41 @@ public class Tabbed_Requests extends AppCompatActivity {
 
             return rootView;
         }
+
+    }
+
+    public static void LockDialog(FragmentActivity activity) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(activity);
+        builder1.setMessage("Firma del Cliente");
+        builder1.setCancelable(true);
+        View view = View.inflate(activity,R.layout.lock_design,null);
+        builder1.setView(view);
+
+        final Button button_9 = (Button)view.findViewById(R.id.button9);
+        final Button button_10 = (Button)view.findViewById(R.id.button10);
+
+        System.out.println(button_10.getX());
+
+        button_9.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(Color.RED);
+                mPaint.setStrokeWidth(25);
+
+                Canvas canvas = new Canvas();
+
+                canvas.drawLine(button_9.getX(),button_9.getY(),button_10.getX(),button_10.getY(),mPaint);
+                return false;
+            }
+        });
+
+
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+
     }
 
     public static void Alertdialog(final String id_list, final FragmentActivity activity){
