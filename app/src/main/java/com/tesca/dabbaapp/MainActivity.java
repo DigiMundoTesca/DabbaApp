@@ -10,8 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -434,12 +436,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         OrdenAdapter(List<Orden> items) {
-            this.items = items;
+
+            try {
+                this.items = items;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public int getItemCount() {
-            return items.size();
+            if(items!=null) {
+                return items.size();
+            }else
+                return 0;
         }
 
         @Override
@@ -455,6 +465,7 @@ public class MainActivity extends AppCompatActivity {
             User_Dabba us = items.get(i).getCustom_user().getUser();
 
             viewHolder.card_view.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, Tabbed_Requests.class);

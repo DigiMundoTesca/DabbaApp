@@ -3,8 +3,10 @@ package com.tesca.dabbaapp;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,6 +27,7 @@ import android.support.test.espresso.core.deps.dagger.internal.DoubleCheckLazy;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
@@ -53,6 +56,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -70,7 +74,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -80,6 +84,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseAuth mAuth;
     private Location mLastLocation;
     private static final int ALARM_REQUEST_CODE = 1;
+    private static final String Excecute_Alarm = "com.tesca.dabbaapp.action.RUN_INTENT_SERVICE";
 
 
     @Override
@@ -155,11 +160,48 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Calendar c = Calendar.getInstance();
         long current_long = c.getTimeInMillis();
 
+        Long hora = delivery_long-current_long;
+
         countDown(delivery_long, current_long);
 
         user = (TextView) findViewById(R.id.user_name);
         user.setText("Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n"); //Address
 
+        // Filtro de acciones
+        IntentFilter filter =  new IntentFilter(Excecute_Alarm);
+        // Crear un nuevo ResponseReceiver
+        ResponseReceiver receiver = new ResponseReceiver();
+        // Registrar el receiver y su filtro
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                receiver, filter);
+        // Ejecutar el ServiceIntent
+        Intent servicio = new Intent(this, AlarmService.class);
+        servicio.putExtra("hora",hora);
+        servicio.putExtra("alarma",Excecute_Alarm);
+        startService(servicio);
+
+    }
+
+    // Broadcast receiver que recibe las emisiones desde los servicios
+    private class ResponseReceiver extends BroadcastReceiver {
+
+        // Sin instancias
+        private ResponseReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Excecute_Alarm:
+                    Toast.makeText(getApplicationContext(), "Servicio destruido...", Toast.LENGTH_SHORT).show();
+                    break;
+
+                /*case Constants.ACTION_RUN_ISERVICE:
+                    progressText.setText(intent.getIntExtra(Constants.EXTRA_PROGRESS, -1) + "");
+                    break;*/
+
+            }
+        }
     }
 
     @Override
@@ -233,9 +275,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            Toast.makeText(this, "Ubicación encontrada", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ubicación encontrada", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Ubicación no encontrada", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ubicación no encontrada", Toast.LENGTH_SHORT).show();
         }
     }
 

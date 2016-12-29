@@ -126,7 +126,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/textView5"
-                    android:layout_above="@+id/material_design_android_floating_action_menu"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
 
