@@ -52,8 +52,6 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //Inicializar base de datos
         mDatabase = FirebaseDatabase.getInstance();
@@ -88,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements
             }
         });
 
-        showToolbar(getResources().getString(R.string.toolbar_deliver_login),true);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -129,14 +126,6 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
 
-    }
-
-
-    public void showToolbar (String tittle, boolean upButton){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(tittle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
     }
 
 
