@@ -32,8 +32,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
@@ -45,6 +47,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +77,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.InfoWindowAdapter, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -83,9 +86,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private Location mLastLocation;
+    private LayoutInflater inflater;
     private static final int ALARM_REQUEST_CODE = 1;
     private static final String Excecute_Alarm = "com.tesca.dabbaapp.action.RUN_INTENT_SERVICE";
 
+
+    String city, line, state, zip, country, address, info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,12 +141,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             e.printStackTrace();
         }
 
-        String city = addresses.get(0).getLocality();
-        String line = addresses.get(0).getAddressLine(0);
-        String state = addresses.get(0).getAdminArea();
-        String zip = addresses.get(0).getPostalCode();
-        String country = addresses.get(0).getCountryName();
-        String address = line + ", " + state + ", " + zip + ", " + country + " ";
+        city = addresses.get(0).getLocality();
+        line = addresses.get(0).getAddressLine(0);
+        state = addresses.get(0).getAdminArea();
+        zip = addresses.get(0).getPostalCode();
+        country = addresses.get(0).getCountryName();
+        address = line + ", " + state + ", " + zip + ", " + country + " ";
+        info = "Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n";
 
         //19 digitos
         try {
@@ -176,6 +183,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         servicio.setAction(Excecute_Alarm);
         startService(servicio);
 
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        View v = inflater.inflate(R.layout.infowindow, null);
+        ((TextView)v.findViewById(R.id.infowindow)).setText(info);
+        return null;
     }
 
     // Broadcast receiver que recibe las emisiones desde los servicios

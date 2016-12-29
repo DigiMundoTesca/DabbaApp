@@ -35,18 +35,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/colorLightAccent"
-            android:alpha="0.75">
-
-
-        </ScrollView>
-
         <TextView
             android:text="4:00"
             android:id="@+id/textView4"
