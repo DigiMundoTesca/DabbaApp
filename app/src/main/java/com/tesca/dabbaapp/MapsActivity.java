@@ -1,5 +1,6 @@
 package com.tesca.dabbaapp;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -79,7 +80,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.InfoWindowAdapter, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
+public abstract class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.InfoWindowAdapter, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -115,6 +116,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = inflater.inflate(R.layout.infowindow, null);
+                ((TextView)v.findViewById(R.id.infowindow)).setText(info);
+                marker.showInfoWindow();
+                return null;
+            }
+        });
 
         textView = (TextView) findViewById(R.id.textView4);
         Orden extras = (Orden) getIntent().getSerializableExtra("Orden");
@@ -185,18 +201,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         servicio.setAction(Excecute_Alarm);
         startService(servicio);
 
-    }
 
-    @Override
-    public View getInfoWindow(Marker marker) {
-        return null;
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
-        View v = inflater.inflate(R.layout.infowindow, null);
-        ((TextView)v.findViewById(R.id.infowindow)).setText(info);
-        return null;
     }
 
     // Broadcast receiver que recibe las emisiones desde los servicios
@@ -486,6 +491,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
+
 
 
     }
