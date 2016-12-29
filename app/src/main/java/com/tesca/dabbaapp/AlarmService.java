@@ -17,7 +17,8 @@ public class AlarmService extends IntentService {
 
     private static final String ACTION_ALARM = "com.tesca.dabbaapp.action.FOO";
     private boolean quit;
-    private int count;
+    private int count=0;
+    private static final String Excecute_Alarm = "com.tesca.dabbaapp.action.RUN_INTENT_SERVICE";
 
 
     public AlarmService() {
@@ -27,11 +28,11 @@ public class AlarmService extends IntentService {
     @Override
     protected void onHandleIntent(final Intent intent) {
         final Long hora = intent.getExtras().getLong("hora");
-        final String alarma = intent.getExtras().getString("alarma");
+        Toast.makeText(getApplicationContext(),"Servicio Iniciado",Toast.LENGTH_LONG).show();
 
         if (intent != null) {
-            if (alarma.equals(alarma)) {
-                Toast.makeText(getApplicationContext(),"Servicio Iniciado",Toast.LENGTH_SHORT).show();
+            final String alarma = intent.getAction();
+            if (Excecute_Alarm.equals(alarma)) {
                 countDown(hora);
             }
         }
@@ -64,7 +65,6 @@ public class AlarmService extends IntentService {
             count++;
             int b = Integer.valueOf(a)-count;
             a = Integer.toString(b);
-            System.out.println(a);
             Toast.makeText(getApplicationContext(),a,Toast.LENGTH_SHORT).show();
         }
     }

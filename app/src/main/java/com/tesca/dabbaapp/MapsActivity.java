@@ -92,10 +92,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle("Mapa");
-
         this.overridePendingTransition(R.anim.slide_in,
                 R.anim.slide_out);
         mAuth = FirebaseAuth.getInstance();
@@ -177,7 +173,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Ejecutar el ServiceIntent
         Intent servicio = new Intent(this, AlarmService.class);
         servicio.putExtra("hora",hora);
-        servicio.putExtra("alarma",Excecute_Alarm);
+        servicio.setAction(Excecute_Alarm);
         startService(servicio);
 
     }
@@ -204,33 +200,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        else if (id == R.id.logout){
-            mAuth.signOut();
-            startActivity(new Intent(MapsActivity.this, LoginActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onStart() {
