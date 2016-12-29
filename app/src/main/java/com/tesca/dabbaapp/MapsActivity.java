@@ -39,12 +39,15 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -302,27 +305,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
 
-            CameraPosition builder = new CameraPosition.Builder()  //--->Previous code for camera
-                    .target(changed_position)
-                    .zoom(20)
-                    .tilt(50)
-                    .build();
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-            double dLon = Math.toRadians(destination.longitude - changed_position.longitude);
+            builder.include(destination);
+            builder.include(changed_position);
 
-            double lat1 = Math.toRadians(changed_position.latitude);
-            double lat2 = Math.toRadians(destination.latitude);
-            double lon1 = Math.toRadians(changed_position.longitude);
+            LatLngBounds bounds = builder.build();
 
-            double Bx = Math.cos(lat2) * Math.cos(dLon);
-            double By = Math.cos(lat2) * Math.sin(dLon);
-            double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2),Math.sqrt((Math.cos(lat1) + Bx) + By * By));
-            double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 14);
 
-            LatLng middlepoint = new LatLng(lat3,lon3);
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(middlepoint, 15));
+            mMap.animateCamera(cu);
         }
+
 
         @Override
         public void onProviderDisabled(String provider) {

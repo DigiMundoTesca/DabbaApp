@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -309,6 +310,8 @@ public class Tabbed_Requests extends AppCompatActivity {
 
                 if(pin_introducido.equals(pin)){
                     Alertdialog(id,activity);
+                }else{
+                    Toast.makeText(activity, "Pin Incorrecto", Toast.LENGTH_SHORT).show();
                 }
 
             }
