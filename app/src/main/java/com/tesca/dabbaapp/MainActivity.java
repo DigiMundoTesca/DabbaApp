@@ -436,12 +436,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         OrdenAdapter(List<Orden> items) {
-            this.items = items;
+
+            try {
+                this.items = items;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public int getItemCount() {
-            return items.size();
+            if(items!=null) {
+                return items.size();
+            }else
+                return 0;
         }
 
         @Override
