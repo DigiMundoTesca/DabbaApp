@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,6 +28,8 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
@@ -69,7 +72,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.InfoWindowAdapter, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Serializable {
 
     private GoogleMap mMap;
     private String TAG = "Maps_Activity";
@@ -140,21 +143,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         country = addresses.get(0).getCountryName();
         address = line + ", " + state + ", " + zip + ", " + country + " ";
         info = "Cliente:\n\t\t"+customer+"\nDirección:\n\t\t"+ address +"\n";
-
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                View v = inflater.inflate(R.layout.infowindow, null);
-                ((TextView)v.findViewById(R.id.infowindow)).setText(info);
-                //marker.showInfoWindow();
-                return null;
-            }
-        });
 
         //19 digitos
         try {
@@ -448,6 +436,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
+        mMap.setInfoWindowAdapter(this);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
 
@@ -465,6 +454,45 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        return prepareInfoView(marker);
+        //return null;
+    }
+
+    private View prepareInfoView(Marker marker){
+        //prepare InfoView programmatically
+        LinearLayout infoView = new LinearLayout(MapsActivity.this);
+        LinearLayout.LayoutParams infoViewParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        infoView.setOrientation(LinearLayout.HORIZONTAL);
+        infoView.setLayoutParams(infoViewParams);
+
+        ImageView infoImageView = new ImageView(MapsActivity.this);
+        //Drawable drawable = getResources().getDrawable(R.mipmap.ic_launcher);
+        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_map);
+        infoImageView.setImageDrawable(drawable);
+        infoView.addView(infoImageView);
+
+        LinearLayout subInfoView = new LinearLayout(MapsActivity.this);
+        LinearLayout.LayoutParams subInfoViewParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        subInfoView.setOrientation(LinearLayout.VERTICAL);
+        subInfoView.setLayoutParams(subInfoViewParams);
+
+        TextView subInfoLat = new TextView(MapsActivity.this);
+        subInfoLat.setText(info);
+        subInfoView.addView(subInfoLat);
+        infoView.addView(subInfoView);
+
+        return infoView;
     }
 
     private void countDown(long b, long a){
