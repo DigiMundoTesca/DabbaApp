@@ -1,5 +1,6 @@
 package com.tesca.dabbaapp;
 
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -546,9 +547,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void dialog() //Alert dialog
     {
-
         final AlertFragment dialog = new AlertFragment();
         dialog.show(getSupportFragmentManager(), "dialog");
+        android.app.Fragment frag = getFragmentManager().findFragmentByTag("dialog");
+        if (frag != null){
+            getFragmentManager().beginTransaction().remove(frag).commit();
+        }
         final MediaPlayer mp = MediaPlayer.create(MapsActivity.this, R.raw.alert);
         mp.start();
 
