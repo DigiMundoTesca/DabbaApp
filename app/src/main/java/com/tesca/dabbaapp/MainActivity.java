@@ -510,13 +510,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void notOrder() {
         ImageView iv =  new ImageView(this);
-        iv.setImageResource(R.drawable.alert1);
+        TextView tv = new TextView(this);
+        iv.setImageResource(R.drawable.moto2);
+        tv.setText("No hay pedidos");
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.activity_main);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(iv,lp);
+        //rl.addView(tv,lp);
     }
 
 
