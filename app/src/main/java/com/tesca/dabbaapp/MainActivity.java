@@ -449,8 +449,7 @@ public class MainActivity extends AppCompatActivity {
             if(items!=null) {
                 return items.size();
             }else {
-                notOrder();
-                return 0;
+                return notOrder();
             }
         }
 
@@ -508,7 +507,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void notOrder() {
+    private int notOrder() {
         ImageView iv =  new ImageView(this);
         TextView tv = new TextView(this);
         iv.setImageResource(R.drawable.moto2);
@@ -520,6 +519,7 @@ public class MainActivity extends AppCompatActivity {
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(iv,lp);
         //rl.addView(tv,lp);
+        return 0;
     }
 
 
