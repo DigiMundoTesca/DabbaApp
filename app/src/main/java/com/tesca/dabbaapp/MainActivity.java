@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,7 +34,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -445,8 +448,10 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             if(items!=null) {
                 return items.size();
-            }else
+            }else {
+                notOrder();
                 return 0;
+            }
         }
 
         @Override
@@ -503,6 +508,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void notOrder() {
+        ImageView iv =  new ImageView(this);
+        iv.setImageResource(R.drawable.alert1);
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.activity_main);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        rl.addView(iv,lp);
+    }
 
 
     public static Calendar toCalendar(Date date) {
