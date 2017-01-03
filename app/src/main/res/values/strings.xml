@@ -56,6 +56,7 @@
     <string name="complete">Completada</string>
     <string name="canceled">Cancelado</string>
     <string name="gotoApp">Ver en Dabba</string>
+    <string name="no_order">No hay ordenes</string>
 
     <string-array name="stars">
         <item>Pesimo</item>
