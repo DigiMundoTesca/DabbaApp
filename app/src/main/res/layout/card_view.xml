@@ -27,7 +27,7 @@
                 android:text="07:00"
                 android:textSize="30sp"
                 android:textIsSelectable="false"
-                android:textColor="@color/cardview_light_background"
+                android:textColor="@color/cast_expanded_controller_background_color"
                 android:layout_marginBottom="3dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_width="match_parent"
