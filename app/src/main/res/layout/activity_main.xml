@@ -10,10 +10,32 @@
     tools:context="com.tesca.dabbaapp.MainActivity"
     android:background="@color/colorPrimary">
 
+    <ImageView
+        android:id="@+id/notorderimg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/moto2"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/notordertext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notorderimg"
+        android:layout_centerHorizontal="true"
+        android:text="@string/no_order"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:visibility="gone"
+        />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab1"
-        app:fabSize="normal"
+        app:fab_size="normal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"

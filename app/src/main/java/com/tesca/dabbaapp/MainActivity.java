@@ -68,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.tesca.dabbaapp.R.id.lista;
+import static com.tesca.dabbaapp.R.id.notordertext;
 import static com.tesca.dabbaapp.R.id.thing_proto;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout refreshLayout;
     private OrdenAdapter orden;
     private FirebaseAuth mAuth;
+    private TextView tv;
+    private ImageView iv;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -403,13 +406,19 @@ public class MainActivity extends AppCompatActivity {
             lv.setHasFixedSize(true);
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(MainActivity.this);
             lv.setLayoutManager(lManager);
-            Log.v("test", result.toString());
-            if (result.size() == 0){
-                notOrder();
-            }else {
-                orden = new OrdenAdapter(result);
-                lv.setAdapter(orden);
+            try{
+                if (result.size() == 0){
+                    notOrder();
+                }else {
+                    orden = new OrdenAdapter(result);
+                    lv.setAdapter(orden);
+                    iv.setVisibility(View.GONE);
+                    tv.setVisibility(View.GONE);
+                }
+            } catch (NullPointerException e){
+                e.printStackTrace();
             }
+
         }
 
     }
@@ -454,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
             if(items!=null) {
                 return items.size();
             }else {
-                return notOrder();
+                return 0;
             }
         }
 
@@ -514,18 +523,15 @@ public class MainActivity extends AppCompatActivity {
 
     private int notOrder() {
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setMessage("Sin entregas pendientes")
-                .setTitle("Entregas")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog dialog1 = dialog.create();
-        dialog1.show();
+        tv = (TextView) findViewById(R.id.notordertext);
+        iv = (ImageView) findViewById(R.id.notorderimg);
+
+        tv.setVisibility(View.VISIBLE);
+        iv.setVisibility(View.VISIBLE);
+
+
         return 0;
+
     }
 
     public static Calendar toCalendar(Date date) {
