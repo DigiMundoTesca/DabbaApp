@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         new GetContacts().execute();
 
         lv = (RecyclerView) findViewById(lista);
+        tv = (TextView) findViewById(R.id.notordertext);
+        iv = (ImageView) findViewById(R.id.notorderimg);
 
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefresh);
         refreshLayout.setOnRefreshListener(
@@ -522,16 +524,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int notOrder() {
-
-        tv = (TextView) findViewById(R.id.notordertext);
-        iv = (ImageView) findViewById(R.id.notorderimg);
-
         tv.setVisibility(View.VISIBLE);
         iv.setVisibility(View.VISIBLE);
-
-
         return 0;
-
     }
 
     public static Calendar toCalendar(Date date) {
