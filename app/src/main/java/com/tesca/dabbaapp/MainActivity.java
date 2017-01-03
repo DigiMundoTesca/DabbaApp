@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                "Sin respuesta del Servidor, Verifica tu conexion a internet de lo contrario contacte al Administrador!",
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
@@ -409,12 +409,12 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(MainActivity.this);
             lv.setLayoutManager(lManager);
             try{
+                orden = new OrdenAdapter(result);
+                lv.setAdapter(orden);
                 if (result.size() == 0){
                     tv.setVisibility(View.VISIBLE);
                     iv.setVisibility(View.VISIBLE);
                 }else {
-                    orden = new OrdenAdapter(result);
-                    lv.setAdapter(orden);
                     iv.setVisibility(View.GONE);
                     tv.setVisibility(View.GONE);
                 }
