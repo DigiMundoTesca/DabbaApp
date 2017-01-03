@@ -39,12 +39,12 @@
                     android:text="07:00"
                     android:textSize="30sp"
                     android:textIsSelectable="false"
-                    android:textColor="@color/cardview_light_background"
+                    android:textColor="@color/cast_expanded_controller_background_color"
                     android:layout_marginBottom="3dp"
                     android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_width="match_parent"
                     android:textAlignment="center"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="@color/colorAccent" />
 
                 <TextView
                     android:id="@+id/customer"
@@ -122,7 +122,7 @@
                     android:id="@+id/textView5"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textAlignment="center" />
 
                 <TextView
                     android:text="Paquetes"
@@ -132,7 +132,7 @@
                     android:layout_below="@+id/lista"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textAlignment="center" />
 
                 <ListView
                     android:layout_width="match_parent"
