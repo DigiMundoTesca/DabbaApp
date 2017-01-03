@@ -33,28 +33,6 @@
         />
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab1"
-        app:fab_size="normal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/colorPrimaryDark"
-        android:src="@drawable/face"
-        />
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,6 +48,16 @@
         app:titleTextColor="@color/cardview_light_background"
         android:backgroundTint="@color/colorPrimaryDark" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lista"
         android:layout_height="match_parent"
@@ -80,5 +68,16 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="80dp"
         android:padding="15dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        app:fab_size="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:src="@drawable/face"
+        />
 
 </RelativeLayout>

@@ -410,7 +410,8 @@ public class MainActivity extends AppCompatActivity {
             lv.setLayoutManager(lManager);
             try{
                 if (result.size() == 0){
-                    notOrder();
+                    tv.setVisibility(View.VISIBLE);
+                    iv.setVisibility(View.VISIBLE);
                 }else {
                     orden = new OrdenAdapter(result);
                     lv.setAdapter(orden);
@@ -521,12 +522,6 @@ public class MainActivity extends AppCompatActivity {
             viewHolder.hora_entrega.setText(show_time);
 
         }
-    }
-
-    private int notOrder() {
-        tv.setVisibility(View.VISIBLE);
-        iv.setVisibility(View.VISIBLE);
-        return 0;
     }
 
     public static Calendar toCalendar(Date date) {
