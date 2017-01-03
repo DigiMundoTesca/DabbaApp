@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,7 +34,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -155,8 +158,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
+                .setName("Main Page")
                 .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)
@@ -401,8 +403,13 @@ public class MainActivity extends AppCompatActivity {
             lv.setHasFixedSize(true);
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(MainActivity.this);
             lv.setLayoutManager(lManager);
-            orden = new OrdenAdapter(result);
-            lv.setAdapter(orden);
+            Log.v("test", result.toString());
+            if (result.size() == 0){
+                notOrder();
+            }else {
+                orden = new OrdenAdapter(result);
+                lv.setAdapter(orden);
+            }
         }
 
     }
@@ -446,8 +453,9 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             if(items!=null) {
                 return items.size();
-            }else
-                return 0;
+            }else {
+                return notOrder();
+            }
         }
 
         @Override
@@ -504,6 +512,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private int notOrder() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setMessage("Sin entregas pendientes")
+                .setTitle("Entregas")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog1 = dialog.create();
+        dialog1.show();
+        return 0;
+    }
 
 
     public static Calendar toCalendar(Date date) {
