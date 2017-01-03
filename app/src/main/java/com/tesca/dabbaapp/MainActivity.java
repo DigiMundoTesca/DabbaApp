@@ -403,8 +403,13 @@ public class MainActivity extends AppCompatActivity {
             lv.setHasFixedSize(true);
             RecyclerView.LayoutManager lManager = new LinearLayoutManager(MainActivity.this);
             lv.setLayoutManager(lManager);
-            orden = new OrdenAdapter(result);
-            lv.setAdapter(orden);
+            Log.v("test", result.toString());
+            if (result.size() == 0){
+                notOrder();
+            }else {
+                orden = new OrdenAdapter(result);
+                lv.setAdapter(orden);
+            }
         }
 
     }
@@ -508,17 +513,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int notOrder() {
-        ImageView iv =  new ImageView(this);
-        TextView tv = new TextView(this);
-        iv.setImageResource(R.drawable.moto2);
-        tv.setText("No hay pedidos");
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.activity_main);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-        rl.addView(iv,lp);
-        //rl.addView(tv,lp);
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setMessage("Sin entregas pendientes")
+                .setTitle("Entregas")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog1 = dialog.create();
+        dialog1.show();
         return 0;
     }
 
