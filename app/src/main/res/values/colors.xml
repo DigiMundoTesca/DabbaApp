@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#D32F2F</color>
-    <color name="colorToolbar">#D32F2F</color>
-    <color name="colorAccent">#FF9800</color>
+    <color name="colorPrimary">#d24b27</color>
+    <color name="colorPrimaryDark">#d6370d</color>
+    <color name="colorToolbar">#d6370d</color>
+    <color name="colorAccent">#eecd98</color>
     <color name="colorLightAccent">#FFB74D</color>
     <color name="colorLightPrimary">#FFCDD2</color>
     <color name="text_icons">#FFFFFF</color>
@@ -18,5 +18,9 @@
     <color name="trans">#CCFFFFFF</color>
     <color name="done">#4CAF50</color>
     <color name="canceled">#d32f2f</color>
+
+    <color name="text_2">#212440</color>
+
+
 
 </resources>

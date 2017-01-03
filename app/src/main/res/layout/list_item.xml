@@ -4,76 +4,89 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin"
     android:weightSum="1">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="5.91"
-        android:weightSum="1"
-        android:elevation="1dp">
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:id="@+id/hour_tv"
-            android:text="07:00"
-            android:textSize="30sp"
-            android:textIsSelectable="false"
-            android:textColor="@color/cast_expanded_controller_background_color"
-            android:layout_marginBottom="3dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_width="80dp" />
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="match_parent"
+            android:layout_weight="5.91"
+            android:weightSum="1"
+            android:elevation="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/cardview_light_background">
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5.91">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hour_tv"
+                    android:text="07:00"
+                    android:textSize="30sp"
+                    android:textIsSelectable="false"
+                    android:textColor="@color/primary_text"
+                    android:layout_width="wrap_content" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text"
+                    android:text="Pendiente"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5.91">
+
+                <TextView
+                    android:id="@+id/customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp"
+                    android:text="Ricardo Delgado"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text"
+                    android:text="100$"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
             <TextView
                 android:text="Pedido: 2016-10-20 05:30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:textColor="@color/cast_expanded_controller_background_color"
-                android:textSize="16sp"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"
                 android:layout_marginBottom="3dp"
                 android:id="@+id/created_time" />
 
-            <TextView
-                android:id="@+id/customer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cast_expanded_controller_background_color"
-                android:textSize="16sp"
-                android:text="Ricardo Delgado"
-                android:layout_marginBottom="3dp"
-                android:layout_marginLeft="10dp" />
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cast_expanded_controller_background_color"
-                android:text="100$"
-                android:textSize="16sp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginLeft="10dp" />
-
-            <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="2dip"
-                android:textColor="@color/cast_expanded_controller_background_color"
-                android:text="Pendiente"
-                android:textSize="16sp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginLeft="10dp" />
-
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

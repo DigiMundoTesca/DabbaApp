@@ -512,8 +512,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
-=======
     private int notOrder() {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -530,8 +528,6 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
-
->>>>>>> 95e2328d5f0ac090f6c0e9607b3c921347817aef
     public static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
