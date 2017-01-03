@@ -410,10 +410,10 @@ public class MainActivity extends AppCompatActivity {
                 if (result.size() == 0){
                     notOrder();
                 }else {
-                    iv.setVisibility(View.GONE);
-                    tv.setVisibility(View.GONE);
                     orden = new OrdenAdapter(result);
                     lv.setAdapter(orden);
+                    iv.setVisibility(View.GONE);
+                    tv.setVisibility(View.GONE);
                 }
             } catch (NullPointerException e){
                 e.printStackTrace();
