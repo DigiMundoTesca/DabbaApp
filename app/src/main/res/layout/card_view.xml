@@ -32,7 +32,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_width="match_parent"
                 android:textAlignment="center"
-                android:background="@color/colorPrimary" />
+                android:background="@color/colorAccent" />
 
             <TextView
                 android:id="@+id/customer"

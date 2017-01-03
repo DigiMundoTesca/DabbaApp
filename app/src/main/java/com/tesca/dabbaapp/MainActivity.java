@@ -489,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
                 }
             });
-            viewHolder.customer.setText(us.getFirst_name() + " " + us.getLast_name());
+            viewHolder.customer.setText(us.getUsername());
             viewHolder.status.setText(items.get(i).getStatus());
             viewHolder.price.setText(items.get(i).getPrice());
 
