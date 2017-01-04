@@ -28,9 +28,9 @@
 
         <!--<activity
             android:name=".LoginActivity"
-            android:parentActivityName=".DeliverMainActivity">
+            android:parentActivityName=".DeliverMainActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DeliverMainActivity" />
