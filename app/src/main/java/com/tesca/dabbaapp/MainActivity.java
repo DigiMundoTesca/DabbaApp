@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -66,6 +67,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.tesca.dabbaapp.R.id.lista;
 import static com.tesca.dabbaapp.R.id.notordertext;
@@ -175,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        dialog();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -554,5 +558,32 @@ public class MainActivity extends AppCompatActivity {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, builder.build());
+    }
+
+    private void dialog() //Alert dialog
+    {
+        final NextDeliver dialog = new NextDeliver();
+        dialog.show(getSupportFragmentManager(), "dialog");
+        android.app.Fragment frag = getFragmentManager().findFragmentByTag("dialog");
+        if (frag != null){
+            getFragmentManager().beginTransaction().remove(frag).commit();
+        }
+        final MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.alert);
+        mp.start();
+
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                dialog.dismiss(); // Close alert dialog
+                t.cancel(); // Stop timer to avoid crash report
+            }
+        }, 5000); // Starts activity after 5 seconds
     }
 }

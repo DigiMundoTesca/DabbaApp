@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_next_deliver"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    tools:context="com.tesca.dabbaapp.NextDeliver">
+
+    <ImageView
+        android:id="@+id/nextview"
+        android:layout_width="350dp"
+        android:layout_height="175dp"
+        android:layout_gravity="center"
+        android:background="@drawable/mapa"
+
+        />
+
+    <TextView
+        android:id="@+id/nextclient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Cliente"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/nextaddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dirección"
+        android:textSize="20sp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Hora"
+        android:gravity="center"
+        />
+
+</LinearLayout>
