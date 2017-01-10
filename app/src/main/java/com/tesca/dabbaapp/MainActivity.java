@@ -420,7 +420,6 @@ public class MainActivity extends AppCompatActivity {
                     tv.setVisibility(View.VISIBLE);
                     iv.setVisibility(View.VISIBLE);
                 }else {
-                    dialog();
                     iv.setVisibility(View.GONE);
                     tv.setVisibility(View.GONE);
                 }
@@ -534,58 +533,5 @@ public class MainActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
-    }
-
-    public void notification() {
-
-        String ACTION_DISMISS = "Dissmiss";
-
-        Intent dismissIntent = new Intent(this, MainActivity.class);
-
-        dismissIntent.setAction(ACTION_DISMISS);
-        PendingIntent piDismiss = PendingIntent.getService(this, 0, dismissIntent, 0);
-
-        android.support.v4.app.NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.moto2)
-                        .setContentTitle("Nuevo pedido")
-                        .setContentText("Ah llegado un nuevo pedido")
-                        .setDefaults(Notification.DEFAULT_ALL) // must requires VIBRATE permission
-                        .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
-                        .addAction(R.drawable.done,
-                                getString(R.string.gotoApp), piDismiss);
-
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0, builder.build());
-    }
-
-    private void dialog() //Alert dialog
-    {
-        final NextDeliver dialog = new NextDeliver();
-        dialog.show(getSupportFragmentManager(), "dialog");
-        android.app.Fragment frag = getFragmentManager().findFragmentByTag("dialog");
-        if (frag != null){
-            getFragmentManager().beginTransaction().remove(frag).commit();
-        }
-        final MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.alert);
-        mp.start();
-
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
-
-        final Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            public void run() {
-                dialog.dismiss(); // Close alert dialog
-                t.cancel(); // Stop timer to avoid crash report
-            }
-        }, 5000); // Starts activity after 5 seconds
     }
 }
