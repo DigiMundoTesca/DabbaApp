@@ -373,6 +373,9 @@ public class MainActivity extends AppCompatActivity {
                         if (delivery_cal.getTimeInMillis() > current_date.getTimeInMillis()) {
                             lista_de_ordenes.add(orden);
                         }
+
+                        //Verificar estado del pedido para mostrarlo en pantalla
+
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
